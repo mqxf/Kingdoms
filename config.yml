@@ -1,0 +1,56 @@
+DATABASE:
+  HOST: 'localhost'
+  PORT: 3306
+  DATABASE: 'kingdoms'
+  USERNAME: 'root'
+  PASSWORD: 'pass'
+
+ranks:
+    Member:
+        prefix: '&7'
+        permissions:
+            - ''
+        material:
+        name:
+    Helper:
+        prefix: '&7[&9Helper&7] '
+        permissions:
+            - ''
+        material:
+        name:
+    JrMod:
+        prefix: '&7[&aJr. Mod&7] &3'
+        permissions:
+            - ''
+        material:
+        name:
+    Moderator:
+        prefix: '&7[&2Mod&7] &3'
+        permissions:
+            - ''
+        material:
+        name:
+    Builder:
+        prefix: '&7[&eBuilder&7] &2'
+        permissions:
+            - ''
+        material:
+        name:
+    Developer:
+        prefix: '&7[&bDeveloper&7] &b'
+        permissions:
+            - '*'
+    Admin:
+        prefix: '&7[&cAdmin&7] &c' 
+        permissions:
+            - '*'
+        material:
+        name:
+    Owner:
+        prefix: '&7[&4Owner&7] &4'
+        permissions:            
+            - '*'
+        material:
+        name:
+
+    
