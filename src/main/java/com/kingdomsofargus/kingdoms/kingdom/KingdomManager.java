@@ -20,7 +20,6 @@ public class KingdomManager {
 	private Database db;
 	private Kingdoms core;
 	private HashMap<Integer, Kingdom> kingdoms = new HashMap<>();
-
 	public KingdomManager(Kingdoms core, Database db) {
 		this.core = core;
 		this.db = db;
@@ -41,13 +40,13 @@ public class KingdomManager {
 		return null;
 	}
 
-	private void fetchKingdom(int id) {
+	public void fetchKingdom(int id) {
 		db.executeQuery("SELECT * FROM kingdoms WHERE id = ?", new Callback<ResultSet>() {
 			@Override
 			public void execute(ResultSet response) {
 				try {
 						while (response.next()) {
-							Kingdom kingdom = new Kingdom(response.getString("leader"), response.getString("name"), response.getInt("int"));
+							Kingdom kingdom = new Kingdom(response.getString("leader"), response.getString("name"), response.getInt("id"));
 							kingdom.setName(response.getString("name"));
 							kingdom.setLeader(response.getString("leader"));
 							kingdom.setTag(response.getString("tag"));
@@ -57,7 +56,10 @@ public class KingdomManager {
 							kingdom.setAnnouncement(response.getString("announcement"));
 							kingdom.setBank(response.getInt("bank"));
 							kingdoms.put(response.getInt("id"), kingdom);
+							System.out.println("Found kingdom: " + kingdom.getName());
+							System.out.println("------ Leader: " + kingdom.getLeader());
 						}
+
 
 			} catch (SQLException ex) {
 					ex.printStackTrace();
@@ -154,7 +156,7 @@ public class KingdomManager {
 	}
 
 	public void createNewKingdom(Player p, String name, int random_id) {
-		db.insertKingdom(random_id, name, p.getUniqueId().toString(), "none", 0);
+		db.insertKingdom(random_id, p.getUniqueId().toString(), name, "none", 0);
 		fetchKingdom(random_id);
 	}
 

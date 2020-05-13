@@ -1,6 +1,7 @@
 package com.kingdomsofargus.kingdoms.kingdom.impl;
 
 import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.kingdom.Kingdom;
 import com.kingdomsofargus.kingdoms.user.User;
 import com.kingdomsofargus.kingdoms.utils.Utils;
 import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
@@ -50,10 +51,12 @@ public class KingdomLeaveArgument extends CommandArgument {
         		|| Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("Queen")) {
         	player.sendMessage(Utils.chat("&eYou are a leader, do /k disband to disband your kingdom."));
         	} else {
+			Kingdom userKingdom =  Kingdoms.getCore().getKindomManager().getKingdom(kingdom);
+
         		Kingdoms.getCore().getUserManager().getUser(player).setuClass("Wanderer");
 			    Kingdoms.getCore().getUserManager().getUser(player).setKingdom_id(0);
         		player.sendMessage(ChatColor.YELLOW + "Successfully left the kingdom");
-        		Player leader = Bukkit.getPlayer(Kingdoms.getCore().getKindomManager().getKingdom(user.getKingdom_id()).getLeader());
+        		Player leader = Bukkit.getPlayer(userKingdom.getLeader());
         		leader.sendMessage(ChatColor.RED + player.getName() + " left your kingdom!");
         }        
 		return false;

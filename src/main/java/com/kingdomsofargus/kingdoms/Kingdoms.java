@@ -56,7 +56,6 @@ public class Kingdoms extends JavaPlugin {
 	private UserManager userManager;
 	private KingdomManager kindomManager;
 	public static Kingdoms core;
-
 	private Map<String, Rank> idToRank = new HashMap<>();
 	/** **/
 
@@ -135,7 +134,6 @@ public class Kingdoms extends JavaPlugin {
 		userManager = new UserManager(this, database);
 		kindomManager = new KingdomManager(this, database);
 
-
 		/**
 		ranks = new ArrayList<String>();
 		
@@ -160,7 +158,14 @@ public class Kingdoms extends JavaPlugin {
 		 **/
 
 		new ChatListener(this);
-		
+
+		/**
+		 * autumn GUI's
+		 */
+
+		//new KingdomCreationGUI(this);
+
+
 		//saveDefaultConfig();
 		
 		//resetViolations();

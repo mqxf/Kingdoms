@@ -32,7 +32,7 @@ public class Database {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS `users` (`uuid` varchar(255), `username` varchar(255), `purse_coins` INT, `bank_coins` INT, `gender` varchar(255), `rank` varchar(255), `class` varchar(255), `skills` varchar(255), `kingdom_id` INT, `level` INT, `xp` INT, `perms` TEXT)");
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `kingdoms` (`id` INT, `name` varchar(255), `leader` varchar(255), `tag` varchar(255), `bank` INT, `members` varchar(255))");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `kingdoms` (`id` INT, `name` varchar(255), `leader` varchar(255), `tag` varchar(255), `bank` INT, `members` varchar(255), `announcement` varchar(255))");
         } catch (SQLException e) {
             e.printStackTrace();
         }

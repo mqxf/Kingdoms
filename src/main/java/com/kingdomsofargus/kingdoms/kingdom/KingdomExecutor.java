@@ -1,5 +1,6 @@
 package com.kingdomsofargus.kingdoms.kingdom;
 
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -20,10 +21,9 @@ import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
 public class KingdomExecutor extends ArgumentExecutor {
 
     private final CommandArgument helpArgument;
-	
+
     public KingdomExecutor(Kingdoms plugin) {
         super("kingdom");
-
         addArgument(helpArgument = new KingdomHelpArgument(this));
         addArgument(new KingdomCreateArgument(plugin));
         addArgument(new KingdomDisbandArgument(plugin));

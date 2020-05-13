@@ -48,8 +48,6 @@ public class RankCommand implements CommandExecutor, TabCompleter
 				}
 
 
-				System.out.println("ARGS: " + args[2]);
-
 				/**
 				 * @PlaceholderSystem
 				 * @USAGE: {PLAYER}, {RANK}

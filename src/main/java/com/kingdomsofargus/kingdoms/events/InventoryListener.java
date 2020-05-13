@@ -27,7 +27,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class InventoryListener implements Listener {
 	
@@ -68,12 +67,7 @@ public class InventoryListener implements Listener {
 			String name = event.getCurrentItem().getItemMeta().getDisplayName();
 			event.setCancelled(true);
 			if (name.contains("Create")) {
-				String kingdom = Kingdoms.getCore().kingdom.get(player);
-				player.closeInventory();
-				Random rand = new Random();
-				int random_id = rand.nextInt(10000);
-				Kingdoms.getCore().getKindomManager().createNewKingdom(player, name, random_id);
-		        
+		        // TODO IDK WHAT THE FUCK THIS IS <3 autumn
 		        if (user.getGender().equalsIgnoreCase("Male")) {
 		        	user.setuClass("King");
 		        } else if (user.getGender().equalsIgnoreCase("Queen")) {
@@ -81,10 +75,6 @@ public class InventoryListener implements Listener {
 		        } else {
 		        	player.sendMessage("No Gender Specified");
 		        }
-		        
-		        player.sendMessage(ChatColor.YELLOW + "Successfully created kingdom " + ChatColor.GRAY + kingdom);
-		        Bukkit.broadcastMessage(Utils.chat("&eThe kingdom &6&l" + kingdom + "&e has been created by &6&l" + player.getName()));
-		        player.sendMessage(Utils.chat("&7&oSet a kingdom tag with: &r&e/k tag"));
 			}
 			if (name.contains("gender")) {
 				KingdomCreateGUI.applyGenderUI(player);
