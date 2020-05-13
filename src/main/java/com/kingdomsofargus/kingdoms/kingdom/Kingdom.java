@@ -1,8 +1,5 @@
 package com.kingdomsofargus.kingdoms.kingdom;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Kingdom {
 
     /**
@@ -11,46 +8,50 @@ public class Kingdom {
     private String name;
     private String leader;
     private String announcement;
-    private List<String> invites;
+    private String invites;
+    private String members;
     private String tag;
     private int id;
+
     /**
      * Classes
      */
-    private List<String> knights;
-    private List<String> archers;
-    private List<String> engineers;
-    private List<String> blacksmiths;
-    private List<String> excavators;
-    private List<String> farmers;
-    private List<String> magicians;
+    private String knights;
+    private String archers;
+    private String engineers;
+    private String blacksmiths;
+    private String excavators;
+    private String farmers;
+    private String magicians;
 
 
     /**
      * Relationships
      */
-    private List<Integer> allies;
-    private List<Integer> neutral;
-    private List<Integer> enemy;
-    private List<Integer> in_War;
+    private String allies;
+    private String neutral;
+    private String enemy;
+    private String in_War;
     private int bank;
 
     public Kingdom(String leader, String name, int id) {
         this.leader = leader;
         this.name = name;
         this.id = id;
-        announcement = "test";
+        announcement = "";
         tag = "";
         bank = 0;
-        knights = new ArrayList<>();
-        archers = new ArrayList<>();
-        engineers = new ArrayList<>();
-        blacksmiths = new ArrayList<>();
-        excavators = new ArrayList<>();
-        farmers = new ArrayList<>();
-        magicians = new ArrayList<>();
+        members = leader;
+        knights = "";
+        archers = "";
+        engineers = "";
+        blacksmiths = "";
+        excavators = "";
+        farmers = "";
+        magicians = "";
 
-        invites = new ArrayList<>();
+        invites = "";
+
 
         //members.add(leader);
 
@@ -68,7 +69,7 @@ public class Kingdom {
         return announcement;
     }
 
-    public List<String> getInvites() {
+    public String getInvites() {
         return invites;
     }
 
@@ -76,48 +77,56 @@ public class Kingdom {
         return id;
     }
 
-    public List<String> getKnights() {
+    public String getKnights() {
         return knights;
     }
 
-    public List<String> getArchers() {
+    public String getArchers() {
         return archers;
     }
 
-    public List<String> getEngineers() {
+    public String getEngineers() {
         return engineers;
     }
 
-    public List<String> getBlacksmiths() {
+    public String getBlacksmiths() {
         return blacksmiths;
     }
 
-    public List<String> getExcavators() {
+    public String getExcavators() {
         return excavators;
     }
 
-    public List<String> getFarmers() {
+    public String getFarmers() {
         return farmers;
     }
 
-    public List<String> getMagicians() {
+    public String getMagicians() {
         return magicians;
     }
 
-    public List<Integer> getAllies() {
+    public String getAllies() {
         return allies;
     }
 
-    public List<Integer> getNeutral() {
+    public String getNeutral() {
         return neutral;
     }
 
-    public List<Integer> getEnemy() {
+    public String getEnemy() {
         return enemy;
     }
 
-    public List<Integer> getIn_War() {
+    public String getIn_War() {
         return in_War;
+    }
+
+    public String getMembers() {
+        return members;
+    }
+
+    public void setMembers(String members) {
+        this.members = members;
     }
 
     public void setName(String name) {
@@ -132,7 +141,7 @@ public class Kingdom {
         this.announcement = announcement;
     }
 
-    public void setInvites(List<String> invites) {
+    public void setInvites(String invites) {
         this.invites = invites;
     }
 
@@ -140,47 +149,47 @@ public class Kingdom {
         this.id = id;
     }
 
-    public void setKnights(List<String> knights) {
+    public void setKnights(String knights) {
         this.knights = knights;
     }
 
-    public void setArchers(List<String> archers) {
+    public void setArchers(String archers) {
         this.archers = archers;
     }
 
-    public void setEngineers(List<String> engineers) {
+    public void setEngineers(String engineers) {
         this.engineers = engineers;
     }
 
-    public void setBlacksmiths(List<String> blacksmiths) {
+    public void setBlacksmiths(String blacksmiths) {
         this.blacksmiths = blacksmiths;
     }
 
-    public void setExcavators(List<String> excavators) {
+    public void setExcavators(String excavators) {
         this.excavators = excavators;
     }
 
-    public void setFarmers(List<String> farmers) {
+    public void setFarmers(String farmers) {
         this.farmers = farmers;
     }
 
-    public void setMagicians(List<String> magicians) {
+    public void setMagicians(String magicians) {
         this.magicians = magicians;
     }
 
-    public void setAllies(List<Integer> allies) {
+    public void setAllies(String allies) {
         this.allies = allies;
     }
 
-    public void setNeutral(List<Integer> neutral) {
+    public void setNeutral(String neutral) {
         this.neutral = neutral;
     }
 
-    public void setEnemy(List<Integer> enemy) {
+    public void setEnemy(String enemy) {
         this.enemy = enemy;
     }
 
-    public void setIn_War(List<Integer> in_War) {
+    public void setIn_War(String in_War) {
         this.in_War = in_War;
     }
 

@@ -140,7 +140,7 @@ public class UserManager {
 
     public void createNewUser(Player p) {
         System.out.println("Attempting to create new player...");
-        db.insertUser(p.getUniqueId().toString(), p.getName(), "none", 500, 0, core.getDefaultRank().getId(), "WANDERER", 0, 0, 0);
+        db.insertUser(p.getUniqueId().toString(), p.getName(), "none", 500, 0, "Default", "WANDERER", 0, 0, 0);
         fetchUser(p);
     }
 

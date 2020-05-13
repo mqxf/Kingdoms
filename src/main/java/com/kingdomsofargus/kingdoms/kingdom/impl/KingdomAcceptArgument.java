@@ -35,6 +35,8 @@ public class KingdomAcceptArgument extends CommandArgument {
 		}
 		else {
 			Player player = (Player) sender;
+			// TODO REMOVE ALL OF THIS
+
 			if (Kingdoms.getCore().invite.get(player)) {
 				String kingdom = Kingdoms.getCore().inviteName.get(player);
 				player.sendMessage(Utils.chat("&aJoined &b" + kingdom));

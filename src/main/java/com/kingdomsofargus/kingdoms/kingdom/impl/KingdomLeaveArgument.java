@@ -47,12 +47,15 @@ public class KingdomLeaveArgument extends CommandArgument {
         	sender.sendMessage(ChatColor.RED + "You aren't in a kingdom!");
         	return true;
         }
-        if (Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("King")
-        		|| Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("Queen")) {
+        if (Kingdoms.getCore().getUserManager().getUser(player).getuClass().equalsIgnoreCase("King")
+        		|| Kingdoms.getCore().getUserManager().getUser(player).getuClass().equalsIgnoreCase("Queen")) {
         	player.sendMessage(Utils.chat("&eYou are a leader, do /k disband to disband your kingdom."));
         	} else {
 			Kingdom userKingdom =  Kingdoms.getCore().getKindomManager().getKingdom(kingdom);
-
+				String members = userKingdom.getMembers();
+				String regex = "\\s*\\b:" + player.getUniqueId() +"\\b\\s*";
+				String newMembers = members.replaceAll(regex, "");
+				userKingdom.setMembers(newMembers);
         		Kingdoms.getCore().getUserManager().getUser(player).setuClass("Wanderer");
 			    Kingdoms.getCore().getUserManager().getUser(player).setKingdom_id(0);
         		player.sendMessage(ChatColor.YELLOW + "Successfully left the kingdom");

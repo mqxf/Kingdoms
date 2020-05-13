@@ -42,7 +42,7 @@ public class KingdomDiplomacyArgument  extends CommandArgument {
         	return true;
 		}
 		
-		if (Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("King") || Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("Queen")) {
+		if (Kingdoms.getCore().getUserManager().getUser(player).getuClass().equalsIgnoreCase("King") || Kingdoms.getCore().getUserManager().getUser(player).getuClass().equalsIgnoreCase("Queen")) {
 			if (args.length < 2) {
 				player.sendMessage(ChatColor.RED + getUsage("diplomacy"));
 			} else {

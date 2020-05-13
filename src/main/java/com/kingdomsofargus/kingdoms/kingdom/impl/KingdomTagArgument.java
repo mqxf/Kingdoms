@@ -45,7 +45,7 @@ public class KingdomTagArgument extends CommandArgument {
 		        	return true;
 		        } else {
 		        
-			        if	(Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("King") || Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("Queen")) {
+			        if	(Kingdoms.getCore().getUserManager().getUser(player).getuClass().equalsIgnoreCase("King") || Kingdoms.getCore().getUserManager().getUser(player).getuClass().equalsIgnoreCase("Queen")) {
 			        	if (args.length == 1) {
 			        		player.sendMessage(Utils.chat("&cThe tag must be 1 word long"));
 			        	} else {

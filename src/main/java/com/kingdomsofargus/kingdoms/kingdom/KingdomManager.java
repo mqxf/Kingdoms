@@ -50,7 +50,12 @@ public class KingdomManager {
 							kingdom.setName(response.getString("name"));
 							kingdom.setLeader(response.getString("leader"));
 							kingdom.setTag(response.getString("tag"));
-							// TODO Set allies, enemys etc
+							kingdom.setMembers(response.getString("members"));
+							kingdom.setAllies(response.getString("allies"));
+							kingdom.setNeutral(response.getString("neutral"));
+							kingdom.setIn_War(response.getString("in_war"));
+							kingdom.setEnemy(response.getString("enemy"));
+							kingdom.setInvites(response.getString("invites"));
 							// TODO setup roles
 							kingdom.setId(response.getInt("id"));
 							kingdom.setAnnouncement(response.getString("announcement"));
@@ -138,14 +143,17 @@ public class KingdomManager {
 
 	private void saveKingdom(boolean single, Kingdom kingdom) {
 		try {
-			PreparedStatement stmt = db.getConnection().prepareStatement("UPDATE kingdoms" +
-					" SET `name` = ?, `leader` = ?, `tag` = ?, `bank` = ?" +
-					"WHERE id = ?;");
+			PreparedStatement stmt = db.getConnection().prepareStatement("UPDATE kingdoms SET `name` = ?, `leader` = ?, `tag` = ?, `bank` = ?, allies = ?, enemy = ?, neutral = ?, members = ?, invites = ? WHERE id = ?;");
 			stmt.setString(1, kingdom.getName());
 			stmt.setString(2, kingdom.getLeader());
 			stmt.setString(3, kingdom.getTag());
 			stmt.setInt(4, kingdom.getBank());
-			stmt.setInt(5, kingdom.getId());
+			stmt.setString(5, kingdom.getAllies());
+			stmt.setString(6, kingdom.getEnemy());
+			stmt.setString(7, kingdom.getNeutral());
+			stmt.setString(8, kingdom.getMembers());
+			stmt.setString(9, kingdom.getInvites());
+			stmt.setInt(10, kingdom.getId());
 			stmt.executeUpdate();
 		} catch (SQLException ex) {
 			ex.printStackTrace();

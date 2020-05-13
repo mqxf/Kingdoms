@@ -51,7 +51,7 @@ public class KingdomDisbandArgument extends CommandArgument {
         	return true;
         } else {
         
-        	if (Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("King") || Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("Queen")) {
+        	if (Kingdoms.getCore().getUserManager().getUser(player).getuClass().equalsIgnoreCase("King") || Kingdoms.getCore().getUserManager().getUser(player).getuClass().equalsIgnoreCase("Queen")) {
         		
         		ItemStack yes = new ItemStack(Material.LIME_CONCRETE);
         		ItemMeta yesMeta = yes.getItemMeta();

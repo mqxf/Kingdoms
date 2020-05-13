@@ -16,8 +16,7 @@ import com.kingdomsofargus.kingdoms.commands.staff.FlyCommand;
 import com.kingdomsofargus.kingdoms.commands.staff.GamemodeCommand;
 import com.kingdomsofargus.kingdoms.commands.staff.HealCommand;
 import com.kingdomsofargus.kingdoms.commands.staff.HealthCommand;
-import com.kingdomsofargus.kingdoms.events.ChatListener;
-import com.kingdomsofargus.kingdoms.events.JoinListener;
+import com.kingdomsofargus.kingdoms.events.*;
 import com.kingdomsofargus.kingdoms.kingdom.KingdomExecutor;
 import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
 import com.kingdomsofargus.kingdoms.player.User;
@@ -177,6 +176,8 @@ public class Kingdoms extends JavaPlugin {
 			public void run() {
 				Kingdoms.getCore().getUserManager().saveUsers();
 				Kingdoms.getCore().getUserManager().getUsers().clear();
+				Kingdoms.getCore().getKindomManager().saveKingdoms();
+				Kingdoms.getCore().getKindomManager().getKingdoms().clear();
 				System.out.println("[Kingdoms] A quick backup was saved -- Database updated");
 			}
 		}.runTaskTimerAsynchronously(core, 20, 600 * 20);
@@ -189,8 +190,9 @@ public class Kingdoms extends JavaPlugin {
 
 	public void onDisable() {
 		Kingdoms.core = null;
-		getDb().disconnect();
+		getKindomManager().saveKingdoms();
 		getUserManager().saveUsers();
+		getDb().disconnect();
 		NPC	 npc = this.info;
 		npc.despawn();
 	}
@@ -198,15 +200,13 @@ public class Kingdoms extends JavaPlugin {
 	private void registerEvents() {
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new JoinListener(), this);
-		/**
 		pm.registerEvents(new QuitListener(), this);
 		pm.registerEvents(new InventoryListener(), this);
 		pm.registerEvents(new NPCEvent(), this);
-		pm.registerEvents(new CheatListener(this), this);
+		//pm.registerEvents(new CheatListener(this), this);
 		pm.registerEvents(new PickUpListener(), this);
 		pm.registerEvents(new ClickListener(), this);
-		pm.registerEvents(new MoveListener(), this);
-		 **/
+		//pm.registerEvents(new MoveListener(), this);
 	}
 
 	private void registerCommands() {

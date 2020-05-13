@@ -5,6 +5,7 @@ import com.kingdomsofargus.kingdoms.kingdom.Kingdom;
 import com.kingdomsofargus.kingdoms.utils.command.BukkitUtils;
 import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.libs.org.apache.commons.io.IOUtils;
@@ -54,7 +55,7 @@ public class KingdomWhoArgument extends CommandArgument {
         	Kingdom kingdom = Kingdoms.getCore().getKindomManager().getKingdom(kingdom_id);
         	String kingdomLeader = getName(kingdom.getLeader());
         	String kingdomTag = kingdom.getTag();
-        	
+			String[] kingdomMembers = kingdom.getMembers().split(":");
         	sender.sendMessage(ChatColor.GRAY + BukkitUtils.STRAIGHT_LINE_DEFAULT);
         	sender.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD + kingdomName + "'s Info");
         	sender.sendMessage(ChatColor.YELLOW + "  Leader: " + ChatColor.GRAY + kingdomLeader);
@@ -62,6 +63,13 @@ public class KingdomWhoArgument extends CommandArgument {
         	sender.sendMessage(ChatColor.YELLOW + "  Bank: " + ChatColor.GRAY + kingdom.getBank());
         	sender.sendMessage("");
         	sender.sendMessage(ChatColor.GOLD.toString() + "Members:");
+        	for (String member : kingdomMembers) {
+        		if (Bukkit.getPlayer(member) != null) {
+        			sender.sendMessage(ChatColor.GREEN + getName(member) + "");
+				} else {
+        			sender.sendMessage(ChatColor.DARK_RED + getName(member));
+				}
+			}
         	sender.sendMessage(ChatColor.YELLOW + " TODO " );
         	sender.sendMessage(ChatColor.GRAY + BukkitUtils.STRAIGHT_LINE_DEFAULT);
         }

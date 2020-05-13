@@ -1,6 +1,7 @@
 package com.kingdomsofargus.kingdoms.kingdom.impl;
 
 import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.kingdom.Kingdom;
 import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
@@ -58,11 +59,15 @@ public class KingdomRenameArgument extends CommandArgument {
         	return true;
         } else {
         
-        	if (Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("King") || Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("Queen")) {
+        	if (Kingdoms.getCore().getUserManager().getUser(player).getuClass().equalsIgnoreCase("King") || Kingdoms.getCore().getUserManager().getUser(player).getuClass().equalsIgnoreCase("Queen")) {
         		//KingdomManager.renameKingdom(kingdom, name);
         		//KingdomPlayer.setKingdom(player.getUniqueId(), name);
+				Kingdom userKingdom = Kingdoms.getCore().getKindomManager().getKingdom(kingdom);
+
+				userKingdom.setName(name);
 
 				// TODO Rename
+
         		player.sendMessage(ChatColor.YELLOW + "Successfully renamed kingdom to " + ChatColor.GRAY + name);
         	} else {
         		player.sendMessage(ChatColor.RED + "You are not high enough in the kingdom to do this.");
