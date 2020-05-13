@@ -1,18 +1,11 @@
 package com.kingdomsofargus.kingdoms.kingdom.impl;
 
-import org.bukkit.Bukkit;
+import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.kingdomsofargus.kingdoms.Kingdoms;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomExecutor;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
-import com.kingdomsofargus.kingdoms.utils.Utils;
-import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class KingdomRenameArgument extends CommandArgument {
 
@@ -52,22 +45,24 @@ public class KingdomRenameArgument extends CommandArgument {
         	sender.sendMessage(ChatColor.RED + "Kingdom names must cannot be longer than 16 characters.");
         	return true;
         }
-        
-        if (KingdomManager.kingdomExists(name)) {
+
+        if (Kingdoms.getCore().getKindomManager().kingdomExists(name)) {
         	sender.sendMessage(ChatColor.RED + "That name is already taken!");
         	return true;
         }
         
         Player player = (Player) sender;
-        String kingdom = KingdomPlayer.getKingdom(player.getUniqueId());
-        if (kingdom.equals("NONE")) {
+        int kingdom = Kingdoms.getCore().getUserManager().getUser(player).getKingdom_id();
+        if (kingdom == 0) {
         	sender.sendMessage(ChatColor.RED + "You aren't in a kingdom!");
         	return true;
         } else {
         
-        	if (KingdomPlayer.getClass(player.getUniqueId()).equals("King") || KingdomPlayer.getClass(player.getUniqueId()).equals("Queen")) {
-        		KingdomManager.renameKingdom(kingdom, name);
-        		KingdomPlayer.setKingdom(player.getUniqueId(), name);
+        	if (Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("King") || Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("Queen")) {
+        		//KingdomManager.renameKingdom(kingdom, name);
+        		//KingdomPlayer.setKingdom(player.getUniqueId(), name);
+
+				// TODO Rename
         		player.sendMessage(ChatColor.YELLOW + "Successfully renamed kingdom to " + ChatColor.GRAY + name);
         	} else {
         		player.sendMessage(ChatColor.RED + "You are not high enough in the kingdom to do this.");

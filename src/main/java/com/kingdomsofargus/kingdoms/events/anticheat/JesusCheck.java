@@ -17,7 +17,7 @@ public class JesusCheck implements Listener {
 	public void onMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 		
-		User user = Kingdoms.getInstance().USERS.get(player);
+		User user = Kingdoms.getCore().USERS.get(player);
 		
 		if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR
 				|| player.getAllowFlight() == true) {

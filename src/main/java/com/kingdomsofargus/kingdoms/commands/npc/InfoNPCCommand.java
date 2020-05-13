@@ -16,7 +16,6 @@ import com.kingdomsofargus.kingdoms.utils.Utils;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
-import net.citizensnpcs.api.trait.Trait;
 
 public class InfoNPCCommand implements CommandExecutor {
 
@@ -25,14 +24,14 @@ public class InfoNPCCommand implements CommandExecutor {
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
 			if (player.hasPermission("commands.infonpc")) {
-				if (Kingdoms.getInstance().info != null) {
-					Kingdoms.getInstance().info.despawn();
+				if (Kingdoms.getCore().info != null) {
+					Kingdoms.getCore().info.despawn();
 				}
 				Location location = player.getLocation();
 				NPCRegistry registry = CitizensAPI.getNPCRegistry();
 				NPC npc = registry.createNPC(EntityType.VILLAGER, Utils.chat("&e&lINFO"));
 				npc.spawn(location);
-				Kingdoms.getInstance().info = npc;
+				Kingdoms.getCore().info = npc;
 				setInfo(location);
 			}
 		}
@@ -40,16 +39,16 @@ public class InfoNPCCommand implements CommandExecutor {
 	}
 	
 	public void setInfo(Location location) {
-		FileConfiguration config = Kingdoms.getInstance().getConfig();
+		FileConfiguration config = Kingdoms.getCore().getConfig();
 		
 		config.set("npc.info.world", location.getWorld().getName());
 		config.set("npc.info.x", location.getX());
 		config.set("npc.info.y", location.getY());
 		config.set("npc.info.z", location.getZ());
-		Kingdoms.getInstance().saveConfig();
+		Kingdoms.getCore().saveConfig();
 	}
 	public static Location getInfo() {
-		FileConfiguration config = Kingdoms.getInstance().getConfig();
+		FileConfiguration config = Kingdoms.getCore().getConfig();
 		
 		String world = config.getString("npc.info.world");
 		int x = config.getInt("npc.info.x");
@@ -65,7 +64,7 @@ public class InfoNPCCommand implements CommandExecutor {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		NPC npc = registry.createNPC(EntityType.VILLAGER, Utils.chat("&e&lINFO"));
 		npc.spawn(location);
-		Kingdoms.getInstance().info = npc;
+		Kingdoms.getCore().info = npc;
 	}
 
 }

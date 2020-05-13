@@ -2,11 +2,9 @@ package com.kingdomsofargus.kingdoms.gui.kingdom;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import com.kingdomsofargus.kingdoms.Kingdoms;
 import com.kingdomsofargus.kingdoms.player.User;
@@ -16,7 +14,7 @@ public class KingdomCreatePlayerUI {
 
 	public static void menuCountdown(Player player) {
 		
-		User u = Kingdoms.getInstance().USERS.get(player);
+		User u = Kingdoms.getCore().USERS.get(player);
 		
 		ItemStack yes = new ItemStack(Material.LIME_CONCRETE);
 		ItemMeta yesMeta = yes.getItemMeta();
@@ -25,7 +23,7 @@ public class KingdomCreatePlayerUI {
 		
 		KingdomCreateGUI.applyMenu(player, 5, true);
 		
-		int task1 = Bukkit.getScheduler().scheduleSyncDelayedTask(Kingdoms.getInstance(), new Runnable() {
+		int task1 = Bukkit.getScheduler().scheduleSyncDelayedTask(Kingdoms.getCore(), new Runnable() {
 			public void run() {
 				if (player.getOpenInventory().getTitle().contains("Please confirm your details.")) {
 					KingdomCreateGUI.applyMenu(player, 4, true);
@@ -41,7 +39,7 @@ public class KingdomCreatePlayerUI {
 			}
 		}, 20L);
 	
-		int task2 = Bukkit.getScheduler().scheduleSyncDelayedTask(Kingdoms.getInstance(), new Runnable() {
+		int task2 = Bukkit.getScheduler().scheduleSyncDelayedTask(Kingdoms.getCore(), new Runnable() {
 			public void run() {
 				if (player.getOpenInventory().getTitle().contains("Please confirm your details.")) {
 					KingdomCreateGUI.applyMenu(player, 3, true);
@@ -57,7 +55,7 @@ public class KingdomCreatePlayerUI {
 			}
 		}, 40L);
 		
-		int task3 = Bukkit.getScheduler().scheduleSyncDelayedTask(Kingdoms.getInstance(), new Runnable() {
+		int task3 = Bukkit.getScheduler().scheduleSyncDelayedTask(Kingdoms.getCore(), new Runnable() {
 			public void run() {
 				if (player.getOpenInventory().getTitle().contains("Please confirm your details.")) {
 					KingdomCreateGUI.applyMenu(player, 2, true);
@@ -73,7 +71,7 @@ public class KingdomCreatePlayerUI {
 			}
 		}, 60L);
 		
-		int task4 = Bukkit.getScheduler().scheduleSyncDelayedTask(Kingdoms.getInstance(), new Runnable() {
+		int task4 = Bukkit.getScheduler().scheduleSyncDelayedTask(Kingdoms.getCore(), new Runnable() {
 			public void run() {
 				if (player.getOpenInventory().getTitle().contains("Please confirm your details.")) {
 					KingdomCreateGUI.applyMenu(player, 1, true);
@@ -89,7 +87,7 @@ public class KingdomCreatePlayerUI {
 			}
 		}, 80L);
 		
-		int task5 = Bukkit.getScheduler().scheduleSyncDelayedTask(Kingdoms.getInstance(), new Runnable() {
+		int task5 = Bukkit.getScheduler().scheduleSyncDelayedTask(Kingdoms.getCore(), new Runnable() {
 			public void run() {
 				if (player.getOpenInventory().getTitle().contains("Please confirm your details.")) {
 					KingdomCreateGUI.applyMenu(player, 0, false);
@@ -106,7 +104,7 @@ public class KingdomCreatePlayerUI {
 			}
 		}, 100L);
 		
-		int task6 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Kingdoms.getInstance(), new Runnable() {
+		int task6 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Kingdoms.getCore(), new Runnable() {
 			public void run() {
 				if (!player.getOpenInventory().getTitle().contains("Please confirm your details.")) {
 					Bukkit.getScheduler().cancelTask(u.getTask1());

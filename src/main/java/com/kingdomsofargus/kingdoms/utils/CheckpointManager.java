@@ -11,13 +11,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.kingdomsofargus.kingdoms.Kingdoms;
 import com.kingdomsofargus.kingdoms.commands.CheckpointCommand;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
+
 import com.kingdomsofargus.kingdoms.player.User;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.server.v1_15_R1.PacketDataSerializer;
-import net.minecraft.server.v1_15_R1.PacketPlayOutWorldParticles;
-import net.minecraft.server.v1_15_R1.EntityFox.i;
 public class CheckpointManager {
 	
 	public static void createNewCheckpoint(Location location, Player player) {
@@ -31,16 +27,17 @@ public class CheckpointManager {
 				for (Entity e : location.getChunk().getEntities()) {
 					if (e.getLocation().distance(location) < 3) {
 						if (e.equals(player)) {
-							Bukkit.getScheduler().cancelTask(Kingdoms.getInstance().checkpointID.get(player));
-							int current = Kingdoms.getInstance().currentCP.get(player);
+							Bukkit.getScheduler().cancelTask(Kingdoms.getCore().checkpointID.get(player));
+							int current = Kingdoms.getCore().currentCP.get(player);
 							if (current >= 13) {
-								Kingdoms.getInstance().completedCP.put(player, true);
+								Kingdoms.getCore().completedCP.put(player, true);
 								player.sendMessage(Utils.chat("&6You have completed the checkpoints!"));
-								KingdomPlayer.setCP(player.getUniqueId(), true);
+								//KingdomPlayer.setCP(player.getUniqueId(), true);
+								// TODO
 							}
 							else  {
 								createNewCheckpoint(CheckpointCommand.getCheckpoint(current + 1), player);
-								Kingdoms.getInstance().currentCP.put(player, current + 1);
+								Kingdoms.getCore().currentCP.put(player, current + 1);
 								player.sendMessage(Utils.chat("&6You have hit checkpoint &a" + current + "&6 find checkpoint &b" + (current + 1) + "&6 ahead!"));
 							}
 							
@@ -51,7 +48,7 @@ public class CheckpointManager {
 			
 		}, 0, 1L);
 		
-		Kingdoms.getInstance().checkpointID.put(player, task);
+		Kingdoms.getCore().checkpointID.put(player, task);
 		
 	}
 	
@@ -76,7 +73,7 @@ public class CheckpointManager {
 	}
 	
 	public static void turnBack(Player player) {
-		User u = Kingdoms.getInstance().USERS.get(player);
+		User u = Kingdoms.getCore().USERS.get(player);
 		new BukkitRunnable() {
 			
 			@Override
@@ -84,7 +81,7 @@ public class CheckpointManager {
 				u.setCP(false);
 				
 			}
-		}.runTaskLater(Kingdoms.getInstance(), 30L);
+		}.runTaskLater(Kingdoms.getCore(), 30L);
 	}
 	
 }

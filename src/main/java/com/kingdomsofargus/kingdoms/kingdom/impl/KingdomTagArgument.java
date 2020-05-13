@@ -1,17 +1,13 @@
 package com.kingdomsofargus.kingdoms.kingdom.impl;
 
+import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.utils.Utils;
+import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.kingdomsofargus.kingdoms.Kingdoms;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
-import com.kingdomsofargus.kingdoms.utils.Utils;
-import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class KingdomTagArgument extends CommandArgument {
 
@@ -42,14 +38,14 @@ public class KingdomTagArgument extends CommandArgument {
 		        
 		        
 		        Player player = (Player) sender;
-		        String kingdom = KingdomPlayer.getKingdom(player.getUniqueId());
+		        int kingdom = Kingdoms.getCore().getUserManager().getUser(player).getKingdom_id();
 		        
-		        if (kingdom.equals("NONE")) {
+		        if (kingdom == 0) {
 		        	sender.sendMessage(ChatColor.RED + "You aren't in a kingdom!");
 		        	return true;
 		        } else {
 		        
-			        if	(KingdomPlayer.getClass(player.getUniqueId()).equals("King") || KingdomPlayer.getClass(player.getUniqueId()).equals("Queen")) {
+			        if	(Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("King") || Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("Queen")) {
 			        	if (args.length == 1) {
 			        		player.sendMessage(Utils.chat("&cThe tag must be 1 word long"));
 			        	} else {
@@ -57,7 +53,7 @@ public class KingdomTagArgument extends CommandArgument {
 			        			player.sendMessage(ChatColor.RED + "Tags can only be 1 - 8 char long");
 			        			return true;
 			        		}
-			        		KingdomManager.setTag(kingdom, args[1]);
+			        		Kingdoms.getCore().getKindomManager().getKingdom(kingdom).setTag(args[1]);
 			        		player.sendMessage(Utils.chat("&eSuccessfully changed the tag of your kingdom to &6&l" + args[1]));
 
 			        	}

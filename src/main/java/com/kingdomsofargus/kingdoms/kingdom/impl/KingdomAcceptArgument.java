@@ -1,22 +1,15 @@
 package com.kingdomsofargus.kingdoms.kingdom.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
+import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.utils.Utils;
+import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.kingdomsofargus.kingdoms.Kingdoms;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomExecutor;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
-import com.kingdomsofargus.kingdoms.utils.Utils;
-import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
-
-import net.md_5.bungee.api.ChatColor;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class KingdomAcceptArgument extends CommandArgument {
 
@@ -42,10 +35,11 @@ public class KingdomAcceptArgument extends CommandArgument {
 		}
 		else {
 			Player player = (Player) sender;
-			if (Kingdoms.getInstance().invite.get(player)) {
-				String kingdom = Kingdoms.getInstance().inviteName.get(player);
+			if (Kingdoms.getCore().invite.get(player)) {
+				String kingdom = Kingdoms.getCore().inviteName.get(player);
 				player.sendMessage(Utils.chat("&aJoined &b" + kingdom));
-				KingdomPlayer.setKingdom(player.getUniqueId(), kingdom);
+				//KingdomPlayer.setKingdom(player.getUniqueId(), kingdom);
+				// TODO
 			}
 			else {
 				player.sendMessage(Utils.chat("&cYou have not been invited into a kingdom in the past minute."));

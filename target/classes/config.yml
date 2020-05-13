@@ -1,0 +1,42 @@
+chat:
+  format:
+    owner: '&4{PLAYER} &8» &c{MESSAGE}'
+    manager: '&4{PLAYER} &8» &c{MESSAGE}'
+    dev: '&4{PLAYER} &8» &c{MESSAGE}'
+    srmod: '&3{PLAYER} &8» &a{MESSAGE}'
+    jrmod: '&b{PLAYER} &8» &a{MESSAGE}'
+    trainee: '&e{PLAYER} &8» &a{MESSAGE}'
+    mvp+: '{RANK} {PLAYER} &8» &f{MESSAGE}'
+    mvp: '{RANK} {PLAYER} &8» &f{MESSAGE}'
+    vip+: '{RANK} {PLAYER} &8» &f{MESSAGE}'
+    vip: '{RANK} {PLAYER} &8» &f{MESSAGE}'
+    default: '&7{PLAYER} &8» &7{MESSAGE}'
+list-of-commands:
+  message: '&cI''m sorry, but you do not have permission to perform this command. Please contact the server administrator if you believe that this is in error.'
+  default:
+    message: '&cI''m sorry, but you do not have permission to perform this command. Please contact the server administrator if you believe that this is in error.'
+    commands:
+      - 'about'
+      - 'bukkit:about'
+      - 'bukkit:help'
+      - 'bukkit:?'
+      - 'bukkit:me'
+      - 'bukkit:pl'
+      - 'bukkit:plugins'
+      - 'bukkit:ver'
+      - 'bukkit:version'
+      - 'bukkit:ehelp'
+      - 'help'
+      - 'icanhasbukkit'
+      - 'icanhasspigot'
+      - 'info'
+      - '?'
+      - 'pl'
+      - 'eabout'
+      - 'plugins'
+      - 'ver'
+      - 'version'
+      - 'mc:help'
+      - 'minecraft:help'
+
+    

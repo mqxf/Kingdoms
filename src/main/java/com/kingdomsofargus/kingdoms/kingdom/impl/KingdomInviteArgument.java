@@ -1,24 +1,13 @@
 package com.kingdomsofargus.kingdoms.kingdom.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
-
+import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.utils.Utils;
+import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import com.kingdomsofargus.kingdoms.Kingdoms;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomExecutor;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
-import com.kingdomsofargus.kingdoms.utils.Utils;
-import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class KingdomInviteArgument extends CommandArgument {
 
@@ -50,30 +39,31 @@ public class KingdomInviteArgument extends CommandArgument {
         Player player = (Player) sender;
         String name = args[1];
         	
-        if (KingdomPlayer.getKingdom(player.getUniqueId()).equals("NONE")) {
+        if (Kingdoms.getCore().getKindomManager().kingdomExists(name)) {
         	player.sendMessage(ChatColor.RED + "You are not in a kingdom");
         	return true;
         }
         
-        if (KingdomPlayer.getClass(player.getUniqueId()).equals("King") || KingdomPlayer.getClass(player.getUniqueId()).equals("Queen")) {
+        if (Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("King") || Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("Queen")) {
         	if (Bukkit.getPlayer(name) != null) {
 	        	Player target = Bukkit.getPlayer(name);
-	        	String kingdom = KingdomPlayer.getKingdom(player.getUniqueId());
+	        	int kingdom = Kingdoms.getCore().getUserManager().getUser(player).getKingdom_id();
 	        			
-        	if (KingdomPlayer.getKingdom(target.getUniqueId()).equals("NONE")) {
-        		if (!Kingdoms.getInstance().invite.get(target)) {
+        	if (Kingdoms.getCore().getUserManager().getUser(target).getKingdom_id() == 0) {
+        		if (!Kingdoms.getCore().invite.get(target)) {
         			target.sendMessage(Utils.chat("&eYou were invited to join &6&l" + kingdom));
         			target.sendMessage(ChatColor.GRAY.toString() + ChatColor.ITALIC + "You have 1 minute to /k accept");
-        			Kingdoms.getInstance().inviteName.put(target, kingdom);
-        			Kingdoms.getInstance().invite.put(player, true);
-        			new BukkitRunnable() {
+        			// TODO ReDO
+        			//Kingdoms.getCore().inviteName.put(target, kingdom);
+        			//Kingdoms.getCore().invite.put(player, true);
+        			/**new BukkitRunnable() {
 						
 						@Override
 						public void run() {
-							Kingdoms.getInstance().invite.put(target, false);
+							Kingdoms.getCore().invite.put(target, false);
 							
 						}
-					}.runTaskLater(JavaPlugin.getPlugin(Kingdoms.class), 60 * 20L);
+					}.runTaskLater(JavaPlugin.getPlugin(Kingdoms.class), 60 * 20L); **/
         		}
         		else {
         			player.sendMessage(Utils.chat("&cThat player already has an outstanding invite."));

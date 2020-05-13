@@ -1,18 +1,15 @@
 package com.kingdomsofargus.kingdoms.commands.economy;
 
-import java.text.DecimalFormat;
-
+import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.utils.Utils;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.google.common.base.Converter;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
-import com.kingdomsofargus.kingdoms.utils.Utils;
-
-import net.md_5.bungee.api.ChatColor;
+import java.text.DecimalFormat;
 
 public class SetBalanceCommand implements CommandExecutor {
 
@@ -35,7 +32,7 @@ public class SetBalanceCommand implements CommandExecutor {
 							Player target = Bukkit.getPlayer(args[1]);
 							
 							if (isStringInt(args[2])) {
-								KingdomPlayer.setPurseBalance(target.getUniqueId(), Integer.parseInt(args[2]));
+								Kingdoms.getCore().getUserManager().getUser(player).setPurse_coins(Integer.parseInt(args[2]));
 								player.sendMessage(Utils.chat("&eSuccessfully set &6&l" + target.getName() + "'s &ePurse Balance to &6&l" + args[2]));
 							} else {
 								player.sendMessage(ChatColor.RED + "That is not an integer.");
@@ -48,7 +45,7 @@ public class SetBalanceCommand implements CommandExecutor {
 							Player target = Bukkit.getPlayer(args[1]);
 							
 							if (isStringInt(args[2])) {
-								KingdomPlayer.setBankBalance(target.getUniqueId(), Integer.parseInt(args[2]));
+								Kingdoms.getCore().getUserManager().getUser(target).setPurse_coins(Integer.parseInt(args[2]));
 								player.sendMessage(Utils.chat("&eSuccessfully set &6&l" + target.getName() + "'s &eBank Balance to &6&l" + args[2]));
 							} else {
 								player.sendMessage(ChatColor.RED + "That is not an integer.");

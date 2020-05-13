@@ -1,0 +1,33 @@
+name: Kingdoms
+author: [Freddie, Maxim, Autumn]
+main: com.kingdomsofargus.kingdoms.Kingdoms
+version: 0.3
+api-version: 1.13
+depend: [Citizens]
+commands:
+  gender:
+  rank:
+  unban:
+  ban:
+    aliases: [tempban]
+  cheatban:
+    aliases: [cb]
+  balance:
+    aliases: [bal, coins, coinbal]
+  setbalance:
+    aliases: [setbal, setcoins]
+  sbtoggle:
+    aliases: [SCOREBOARD, sb]
+  fly:
+  gamemode:
+    aliases: [gm]
+  heal:
+  health:
+  spawnnpc:
+  kingdom:
+    aliases: [kingdoms, k, team, t]
+  checkpoint:
+    aliases: [cp]
+  infonpc:
+  disguise:
+    aliases: [nick]

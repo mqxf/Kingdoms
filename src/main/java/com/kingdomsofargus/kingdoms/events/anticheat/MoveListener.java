@@ -10,7 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -20,7 +19,7 @@ import com.kingdomsofargus.kingdoms.player.User;
 
 public class MoveListener implements Listener {
 
-	Kingdoms main = Kingdoms.getInstance();
+	Kingdoms main = Kingdoms.getCore();
 	
 	@EventHandler
 	public void onMove(PlayerMoveEvent e) {

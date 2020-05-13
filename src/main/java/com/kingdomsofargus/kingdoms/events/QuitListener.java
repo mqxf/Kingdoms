@@ -14,6 +14,6 @@ public class QuitListener implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		event.setQuitMessage(Utils.chat("&7[&c-&7] " + event.getPlayer().getName()));
 		Permissions.playerPermissions.remove(event.getPlayer().getUniqueId());
-		Kingdoms.getInstance().combined.remove(event.getPlayer());
+		Kingdoms.getCore().combined.remove(event.getPlayer());
 	}
 }

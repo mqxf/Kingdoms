@@ -1,18 +1,6 @@
 package com.kingdomsofargus.kingdoms.events;
 
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.inventory.PrepareAnvilEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.inventory.AnvilInventory;
-import org.bukkit.inventory.ItemStack;
-
-import com.kingdomsofargus.kingdoms.Kingdoms;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
 
 @SuppressWarnings("deprecation")
 public class PickUpListener implements Listener {

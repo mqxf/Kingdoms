@@ -1,32 +1,16 @@
 package com.kingdomsofargus.kingdoms;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.junit.validator.PublicClassValidator;
-
-import com.bizarrealex.aether.Aether;
-import com.deanveloper.skullcreator.SkullCreator;
+import com.kingdomsofargus.kingdoms.api.DataFile;
 import com.kingdomsofargus.kingdoms.commands.CheckpointCommand;
 import com.kingdomsofargus.kingdoms.commands.SBToggleCommand;
-import com.kingdomsofargus.kingdoms.commands.bans.*;
+import com.kingdomsofargus.kingdoms.commands.bans.CheatBanCommand;
 import com.kingdomsofargus.kingdoms.commands.disguise.DisguiseCommand;
-import com.kingdomsofargus.kingdoms.commands.economy.*;
+import com.kingdomsofargus.kingdoms.commands.economy.BalanceCommand;
+import com.kingdomsofargus.kingdoms.commands.economy.SetBalanceCommand;
 import com.kingdomsofargus.kingdoms.commands.npc.InfoNPCCommand;
 import com.kingdomsofargus.kingdoms.commands.npc.NpcCommand;
-import com.kingdomsofargus.kingdoms.commands.ranks.*;
+import com.kingdomsofargus.kingdoms.commands.ranks.GenderCommand;
+import com.kingdomsofargus.kingdoms.commands.ranks.RankCommand;
 import com.kingdomsofargus.kingdoms.commands.staff.FlyCommand;
 import com.kingdomsofargus.kingdoms.commands.staff.GamemodeCommand;
 import com.kingdomsofargus.kingdoms.commands.staff.HealCommand;
@@ -34,22 +18,48 @@ import com.kingdomsofargus.kingdoms.commands.staff.HealthCommand;
 import com.kingdomsofargus.kingdoms.events.*;
 import com.kingdomsofargus.kingdoms.events.anticheat.MoveListener;
 import com.kingdomsofargus.kingdoms.kingdom.KingdomExecutor;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
+import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
 import com.kingdomsofargus.kingdoms.player.User;
-import com.kingdomsofargus.kingdoms.scoreboard.SBProvider;
-import com.kingdomsofargus.kingdoms.sql.MySQL;
-import com.kingdomsofargus.kingdoms.utils.CheckpointManager;
+import com.kingdomsofargus.kingdoms.sql.Database;
+import com.kingdomsofargus.kingdoms.tasks.BackupTask;
+import com.kingdomsofargus.kingdoms.user.Rank;
+import com.kingdomsofargus.kingdoms.user.UserManager;
 import com.kingdomsofargus.kingdoms.utils.Utils;
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.antlr.ExpressionParser.CaseContext;
-
-import lombok.Getter;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class Kingdoms extends JavaPlugin {
-	
-	public static MySQL mySQL;
-	
+
+	/**
+	 * Setup
+	 * Author: Autumn
+	 */
+
+	private Rank defaultRank;
+	public DataFile ranksFile;
+	private DataFile messageFile;
+	private DataFile configFile;
+	private Database database;
+	private DataFile databaseFile;
+	private UserManager userManager;
+	private KingdomManager kindomManager;
+	public static Kingdoms core;
+
+	private Map<String, Rank> idToRank = new HashMap<>();
+	/** **/
+
 	public boolean hasThroneRoom = false;
 	public boolean hasTreasureVault = false;
 	public boolean aboveGround = false;
@@ -58,7 +68,7 @@ public class Kingdoms extends JavaPlugin {
 	public boolean banned = false;
 	
 	public HashMap<Player, User> USERS;
-	public HashMap<Player, KingdomPlayer> KP;
+	//public HashMap<Player, KingdomPlayer> KP;
 	public HashMap<Player, Player> BANUI;
 	public HashMap<Player, Boolean> combined;
 	
@@ -111,10 +121,22 @@ public class Kingdoms extends JavaPlugin {
 	 * 
 	 */
 	
-	@Getter public static Kingdoms instance;
-	
 	public void onEnable() {
-		instance = this;
+		/**
+		 * Setup
+		 */
+		Kingdoms.core = this;
+
+		configFile = new DataFile(this, "config", true);
+		messageFile = new DataFile(this, "messages", true);
+		databaseFile = new DataFile(this, "database", true);
+		ranksFile = new DataFile(this, "ranks", true);
+		database = new Database(this, databaseFile);
+		userManager = new UserManager(this, database);
+		kindomManager = new KingdomManager(this, database);
+
+
+		/**
 		ranks = new ArrayList<String>();
 		
 		USERS = new HashMap<Player, User>();
@@ -132,40 +154,42 @@ public class Kingdoms extends JavaPlugin {
 		inviteName = new HashMap<Player, String>();
 		
 		kingdom = new HashMap<Player, String>();
-		
+
 		mySQL = new MySQL();
 		mySQL.setupSQL();
+		 **/
+
+		new ChatListener(this);
 		
-		getCommand("sbtoggle").setExecutor(new SBToggleCommand());
-		getCommand("gender").setExecutor(new GenderCommand());
-		getCommand("balance").setExecutor(new BalanceCommand()); 
-		getCommand("disguise").setExecutor(new DisguiseCommand());
+		//saveDefaultConfig();
 		
-		//STAFF COMMANDS
-		getCommand("setbalance").setExecutor(new SetBalanceCommand());
-		getCommand("createrank").setExecutor(new CreateRankCommand());
-		getCommand("delrank").setExecutor(new DelRankCommand());
-		getCommand("rank").setExecutor(new RankCommand());
-		getCommand("setrank").setExecutor(new SetRankCommand());
-		getCommand("setprefix").setExecutor(new SetPrefixCommand());
-		getCommand("cheatban").setExecutor(new CheatBanCommand());
-		getCommand("delrank").setExecutor(new DelRankCommand());
-		getCommand("fly").setExecutor(new FlyCommand());
-		getCommand("gamemode").setExecutor(new GamemodeCommand());
-		getCommand("heal").setExecutor(new HealCommand());
-		getCommand("health").setExecutor(new HealthCommand());
-		getCommand("spawnnpc").setExecutor(new NpcCommand());
-		getCommand("infonpc").setExecutor(new InfoNPCCommand());
-		getCommand("checkpoint").setExecutor(new CheckpointCommand());
+		//resetViolations();
 		
-		//DEV TEST COMMANDS
-		
-		//KINGDOM
-		getCommand("kingdom").setExecutor(new KingdomExecutor(this));
-		
+		//Location loc = InfoNPCCommand.getInfo();
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				new BackupTask(core);
+			}
+		}.runTaskTimerAsynchronously(core, 1L, 600 * 20);
+
+		loadRanks();
+		registerCommands();
+		registerEvents();
+	}
+
+
+	public void onDisable() {
+		Kingdoms.core = null;
+		getDb().disconnect();
+		getUserManager().saveUsers();
+		NPC	 npc = this.info;
+		npc.despawn();
+	}
+
+	private void registerEvents() {
 		PluginManager pm = Bukkit.getPluginManager();
-        new Aether(this, new SBProvider(this));
-		pm.registerEvents(new ChatListener(), this);
 		pm.registerEvents(new JoinListener(), this);
 		pm.registerEvents(new QuitListener(), this);
 		pm.registerEvents(new InventoryListener(), this);
@@ -174,21 +198,33 @@ public class Kingdoms extends JavaPlugin {
 		pm.registerEvents(new PickUpListener(), this);
 		pm.registerEvents(new ClickListener(), this);
 		pm.registerEvents(new MoveListener(), this);
-		
-		saveDefaultConfig();
-		
-		resetViolations();
-		
-		Location loc = InfoNPCCommand.getInfo();
-		
 	}
-	
-	public void onDisable() {
-		instance = null;
-		NPC npc = this.info;
-		npc.despawn();
+
+	private void registerCommands() {
+
+		// User Commands
+		getCommand("sbtoggle").setExecutor(new SBToggleCommand());
+		getCommand("gender").setExecutor(new GenderCommand());
+		getCommand("balance").setExecutor(new BalanceCommand());
+		getCommand("disguise").setExecutor(new DisguiseCommand());
+
+		//KINGDOM Commands
+		getCommand("kingdom").setExecutor(new KingdomExecutor(this));
+
+		//STAFF COMMANDS
+		getCommand("setbalance").setExecutor(new SetBalanceCommand());
+		getCommand("rank").setExecutor(new RankCommand());
+		getCommand("cheatban").setExecutor(new CheatBanCommand());
+		getCommand("fly").setExecutor(new FlyCommand());
+		getCommand("gamemode").setExecutor(new GamemodeCommand());
+		getCommand("heal").setExecutor(new HealCommand());
+		getCommand("health").setExecutor(new HealthCommand());
+		getCommand("spawnnpc").setExecutor(new NpcCommand());
+		getCommand("infonpc").setExecutor(new InfoNPCCommand());
+		getCommand("checkpoint").setExecutor(new CheckpointCommand());
 	}
-	
+
+
 	public void logCheatCheck(String code, String hack, Player player) {
 		User u = USERS.get(player);
 		for (Player p : Bukkit.getOnlinePlayers()) {
@@ -228,7 +264,8 @@ public class Kingdoms extends JavaPlugin {
 		}
 		
 	}
-	
+
+	/**
 	public void resetViolations() {
 		new BukkitRunnable() {
 			
@@ -240,7 +277,66 @@ public class Kingdoms extends JavaPlugin {
 				}
 			}
 		}.runTaskTimer(this, 0, 15 * 20L);
+	}**/
+
+	public UserManager getUserManager() {
+		return userManager;
 	}
-	
+
+	public KingdomManager getKindomManager() {
+		return kindomManager;
+	}
+
+	private void loadRanks() {
+		for (String s : ranksFile.getConfig().getConfigurationSection("ranks").getKeys(false)) {
+			Rank rank = new Rank(ranksFile.getConfig().getString("ranks." + s + ".id"),
+					ranksFile.getConfig().getString("ranks." + s + ".prefix"),
+					ChatColor.valueOf(ranksFile.getConfig().getString("ranks." + s + ".color")),
+					ranksFile.getConfig().getStringList("ranks." + s + ".perms"));
+			if (ranksFile.getConfig().isSet("ranks." + s + ".default")) {
+				defaultRank = rank;
+			}
+			if (ranksFile.getConfig().isSet("ranks." + s + ".inherit")) {
+				rank.setInherits(ranksFile.getConfig().getStringList("ranks." + s + ".inherit"));
+			}
+			idToRank.put(ranksFile.getConfig().getString("ranks." + s + ".id"), rank);
+		}
+		if (defaultRank == null) {
+			System.out.println("Crashing! No default rank was set! This is NOT GOOD!");
+			Bukkit.getPluginManager().disablePlugin(this);
+		}
+	}
+
+	public DataFile getConfigFile() {
+		return configFile;
+	}
+
+	public DataFile getMessageFile() {
+		return messageFile;
+	}
+
+
+
+	public DataFile getDatabaseFile() {
+		return databaseFile;
+	}
+
+	public Rank getDefaultRank() {
+		return defaultRank;
+	}
+
+	public Map<String, Rank> getIdToRank() {
+		return idToRank;
+	}
+
+	public Database getDb() {
+		return database;
+	}
+
+	public static Kingdoms getCore() {
+		return core;
+	}
+
+
 
 }

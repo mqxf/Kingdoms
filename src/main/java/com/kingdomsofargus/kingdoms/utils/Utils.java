@@ -1,15 +1,16 @@
 package com.kingdomsofargus.kingdoms.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
 
 	private static List<Material> combinable = new ArrayList<Material>();
-	
+
+
 	public static String chat(String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg);
     }

@@ -1,6 +1,5 @@
 package com.kingdomsofargus.kingdoms.kingdom.impl;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,9 +10,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.kingdomsofargus.kingdoms.Kingdoms;
 import com.kingdomsofargus.kingdoms.gui.kingdom.KingdomDisbandGUI;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomExecutor;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
 import com.kingdomsofargus.kingdoms.utils.Utils;
 import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
 
@@ -48,14 +44,14 @@ public class KingdomDisbandArgument extends CommandArgument {
         
         
         Player player = (Player) sender;
-        String kingdom = KingdomPlayer.getKingdom(player.getUniqueId());
+		int kingdom = Kingdoms.getCore().getUserManager().getUser(player).getKingdom_id();
         
-        if (kingdom.equals("NONE")) {
+        if (kingdom == 0) {
         	sender.sendMessage(ChatColor.RED + "You aren't in a kingdom!");
         	return true;
         } else {
         
-        	if (KingdomPlayer.getClass(player.getUniqueId()).equals("King") || KingdomPlayer.getClass(player.getUniqueId()).equals("Queen")) {
+        	if (Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("King") || Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("Queen")) {
         		
         		ItemStack yes = new ItemStack(Material.LIME_CONCRETE);
         		ItemMeta yesMeta = yes.getItemMeta();
@@ -72,7 +68,7 @@ public class KingdomDisbandArgument extends CommandArgument {
 						}
 						
 					}
-				}.runTaskLater(Kingdoms.getInstance(), 20L);
+				}.runTaskLater(Kingdoms.getCore(), 20L);
 				
 				KingdomDisbandGUI.apply(player, 5, true);
         		new BukkitRunnable() {
@@ -83,7 +79,7 @@ public class KingdomDisbandArgument extends CommandArgument {
 						}
 						
 					}
-				}.runTaskLater(Kingdoms.getInstance(), 40L);
+				}.runTaskLater(Kingdoms.getCore(), 40L);
         		
         		new BukkitRunnable() {
 					@Override
@@ -93,7 +89,7 @@ public class KingdomDisbandArgument extends CommandArgument {
 						}
 						
 					}
-				}.runTaskLater(Kingdoms.getInstance(), 60L);
+				}.runTaskLater(Kingdoms.getCore(), 60L);
         		
         		new BukkitRunnable() {
 					
@@ -104,7 +100,7 @@ public class KingdomDisbandArgument extends CommandArgument {
 						}
 						
 					}
-				}.runTaskLater(Kingdoms.getInstance(), 80L);
+				}.runTaskLater(Kingdoms.getCore(), 80L);
         		
         		new BukkitRunnable() {
 					
@@ -116,7 +112,7 @@ public class KingdomDisbandArgument extends CommandArgument {
 						}
 						
 					}
-				}.runTaskLater(Kingdoms.getInstance(), 100L);
+				}.runTaskLater(Kingdoms.getCore(), 100L);
 	        } else {
 	        	player.sendMessage(ChatColor.RED + "You do not have permission to disband this kingdom!");
 	        }

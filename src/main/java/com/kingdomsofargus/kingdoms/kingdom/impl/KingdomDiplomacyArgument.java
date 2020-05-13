@@ -1,15 +1,14 @@
 package com.kingdomsofargus.kingdoms.kingdom.impl;
 
+import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.gui.kingdom.KingdomDiplomacyGUI;
+import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.kingdomsofargus.kingdoms.Kingdoms;
-import com.kingdomsofargus.kingdoms.gui.kingdom.KingdomDiplomacyGUI;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
-import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
+//import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
 
 public class KingdomDiplomacyArgument  extends CommandArgument {
 
@@ -38,18 +37,18 @@ public class KingdomDiplomacyArgument  extends CommandArgument {
 		
 		Player player = (Player) sender;
 		
-		if (KingdomPlayer.getKingdom(player.getUniqueId()).equals("None")) {
+		if (Kingdoms.getCore().getUserManager().getUser(player).getKingdom_id() != 0) {
         	sender.sendMessage(ChatColor.RED + "You aren't in a kingdom!");
         	return true;
 		}
 		
-		if (KingdomPlayer.getClass(player.getUniqueId()).equals("King") || KingdomPlayer.getClass(player.getUniqueId()).equals("Queen")) {
+		if (Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("King") || Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("Queen")) {
 			if (args.length < 2) {
 				player.sendMessage(ChatColor.RED + getUsage("diplomacy"));
 			} else {
 				String targetKingdom = args[1];
 				
-				if (!KingdomManager.kingdomExists(targetKingdom)) {
+				if (!Kingdoms.getCore().getKindomManager().kingdomExists(targetKingdom)) {
 					player.sendMessage(ChatColor.RED + "That kingdom does not exist!");
 				} else {
 					KingdomDiplomacyGUI.applyMenu(player);

@@ -1,12 +1,12 @@
 package com.kingdomsofargus.kingdoms.commands.ranks;
 
+import com.kingdomsofargus.kingdoms.Kingdoms;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -23,7 +23,7 @@ public class GenderCommand implements CommandExecutor {
 			
 			if (Bukkit.getPlayer(args[0]) != null) {
 				Player target = Bukkit.getPlayer(args[0]);
-				KingdomPlayer.getGender(target.getUniqueId());
+				Kingdoms.getCore().getUserManager().getUser(target).getGender();
 			} else {
 				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "That player is not online.");
 			}
@@ -37,7 +37,7 @@ public class GenderCommand implements CommandExecutor {
 			
 			if (Bukkit.getPlayer(args[0]) != null) {
 				Player target = Bukkit.getPlayer(args[0]);
-				KingdomPlayer.getGender(target.getUniqueId());
+				Kingdoms.getCore().getUserManager().getUser(target).getGender();
 			} else {
 				player.sendMessage(ChatColor.RED + "That player is not online.");
 			}

@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -113,16 +112,16 @@ public class CheckpointCommand implements CommandExecutor {
 	}
 	
 	public void setCheckpoint(Integer integer, Location location) {
-		FileConfiguration config = Kingdoms.getInstance().getConfig();
+		FileConfiguration config = Kingdoms.getCore().getConfig();
 		
 		config.set("checkpoints." + integer + ".world", location.getWorld().getName());
 		config.set("checkpoints." + integer + ".x", location.getX());
 		config.set("checkpoints." + integer + ".y", location.getY());
 		config.set("checkpoints." + integer + ".z", location.getZ());
-		Kingdoms.getInstance().saveConfig();
+		Kingdoms.getCore().saveConfig();
 	}
 	public static Location getCheckpoint(Integer integer) {
-		FileConfiguration config = Kingdoms.getInstance().getConfig();
+		FileConfiguration config = Kingdoms.getCore().getConfig();
 		
 		String world = config.getString("checkpoints." + integer + ".world");
 		int x = config.getInt("checkpoints." + integer + ".x");

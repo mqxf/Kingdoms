@@ -1,174 +1,165 @@
 package com.kingdomsofargus.kingdoms.kingdom;
 
-import java.awt.Insets;
+import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.sql.Callback;
+import com.kingdomsofargus.kingdoms.sql.Database;
+import org.bukkit.entity.Player;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-import org.bukkit.Bukkit;
-
-import com.kingdomsofargus.kingdoms.Kingdoms;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
-import com.mojang.datafixers.types.templates.List;
 
 public class KingdomManager {
 
-	public static int costToMake = 100;
-	public static boolean dayPlaytime = false;
-	public static boolean hasThromeRoom = false;
-	public static boolean hasTreasureVault = false;
-	
-	public static boolean kingdomExists(String name) {
-		try {
-			PreparedStatement statement = Kingdoms.getInstance(). mySQL.getConnection().prepareStatement("SELECT * FROM kingdoms WHERE NAME=?");
-			statement.setString(1, name);
-			
-			ResultSet resultSet = statement.executeQuery();
-			if (resultSet.next()) {
-				return true;
+	private Database db;
+	private Kingdoms core;
+	private HashMap<Integer, Kingdom> kingdoms = new HashMap<>();
+
+	public KingdomManager(Kingdoms core, Database db) {
+		this.core = core;
+		this.db = db;
+	}
+
+	public Kingdom getKingdom(int id) {
+		if (kingdoms.isEmpty()) {
+			fetchKingdom(id);
+		}
+		if (kingdoms.keySet().contains(id)) {
+			return kingdoms.get(id);
+		} else {
+			fetchKingdom(id);
+			if (kingdoms.keySet().contains(id)) {
+				return kingdoms.get(id);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
-	public static void addPlayerToLeader(String kingdom, UUID uuid) {
-		try {
-			String query = "UPDATE users SET CLASS = ? WHERE UUID=?";
-			PreparedStatement statement = Kingdoms.mySQL.getConnection().prepareStatement(query);
-			
-        	if	(KingdomPlayer.getGender(uuid) == "King") {
-        		statement.setString(1, "King");
-        	} else {
-        		statement.setString(1, "Queen");
-        	}
-        	statement.setString(2, uuid.toString());
-        	
-        	statement.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static void createKingdom(String name, String leader) {
-		try {
-			String query = "INSERT INTO kingdoms (NAME,LEADER,BALANCE,TAG) VALUES (?,?,?,?)";
-			PreparedStatement insert = Kingdoms.mySQL.getConnection().prepareStatement(query);
-			
-			insert.setString(1, name);
-			insert.setString(2, leader);
-			insert.setInt(3, 0);
-			
-			String tag = name.charAt(0) + name.charAt(1) + name.charAt(2) + "";
-			
-			insert.setString(4, tag);
-			
-			insert.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	public static void deleteKingdom(String name) {
-		try {
-			PreparedStatement statement = Kingdoms.mySQL.getConnection().prepareStatement("delete from kingdoms where name=?");
-			statement.setString(1, name);
-			statement.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static void setTag(String name, String tag) {
-		try {
-			String query = "UPDATE kingdoms SET TAG = ? WHERE NAME=?";
-			PreparedStatement statement = Kingdoms.mySQL.getConnection().prepareStatement(query);
-			
-			statement.setString(1, tag);
-			statement.setString(2, name);
-			
-			statement.executeUpdate();
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	public static String getTag(String name) {
-		try {
-			String query = "SELECT TAG FROM kingdoms WHERE NAME=?";
-			PreparedStatement statement = Kingdoms.mySQL.getConnection().prepareStatement(query);
-			statement.setString(1, name);
-			
-			ResultSet rs = statement.executeQuery();
-			rs.next();
-			return rs.getString(1);
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return "Couldn't find TAG";
-	}
-	public static String getLeader(String name) {
-		try {
-			String query = "SELECT LEADER FROM kingdoms WHERE NAME=?";
-			PreparedStatement statement = Kingdoms.mySQL.getConnection().prepareStatement(query);
-			statement.setString(1, name);
-			
-			ResultSet rs = statement.executeQuery();
-			rs.next();
-			return rs.getString(1);
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return "Couldn't find LEADER";
-	}
-	public static void renameKingdom(String name, String newName) {
-		try {
-			String query = "UPDATE kingdoms SET NAME = ? WHERE NAME = ?";
-			PreparedStatement statement = Kingdoms.mySQL.getConnection().prepareStatement(query);
-			
-			statement.setString(1, newName);
-			statement.setString(2, name);
-			statement.executeUpdate();
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static ArrayList<String> getMembers(String name) {
-		try {
-			String query = "SELECT NAME FROM users WHERE KINGDOM=?";
-			PreparedStatement statement = Kingdoms.mySQL.getConnection().prepareStatement(query);
-			statement.setString(1, name);
-			
-			ResultSet rs = statement.executeQuery();
-			
-			ArrayList<String> names = new ArrayList<String>();
-			
-			while (rs.next()) {
-				String userName = rs.getString("NAME");
-				names.add(userName);
-			}
-			return names;
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	public static double getBank(String name) {
-		ArrayList<String> names = getMembers(name);
-		double balance = 0;
-		for (int i = 0; i < names.size(); i++) {
-			String player = names.get(i);
-			double playerbal = KingdomPlayer.getBankBalance(Bukkit.getPlayer(player).getUniqueId());
-			balance = balance + playerbal;
-		}
-		return balance;
+
+	private void fetchKingdom(int id) {
+		db.executeQuery("SELECT * FROM kingdoms WHERE id = ?", new Callback<ResultSet>() {
+			@Override
+			public void execute(ResultSet response) {
+				try {
+						while (response.next()) {
+							Kingdom kingdom = new Kingdom(response.getString("leader"), response.getString("name"), response.getInt("int"));
+							kingdom.setName(response.getString("name"));
+							kingdom.setLeader(response.getString("leader"));
+							kingdom.setTag(response.getString("tag"));
+							// TODO Set allies, enemys etc
+							// TODO setup roles
+							kingdom.setId(response.getInt("id"));
+							kingdom.setAnnouncement(response.getString("announcement"));
+							kingdom.setBank(response.getInt("bank"));
+							kingdoms.put(response.getInt("id"), kingdom);
+						}
+
+			} catch (SQLException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}, id);
 	}
-	
+
+
+	public void saveKingdoms() {
+		for (Kingdom k : kingdoms.values()) {
+			saveKingdom(false, k);
+		}
+	}
+
+	public boolean kingdomExists(String name) {
+		ExecutorService service = Executors.newSingleThreadExecutor();
+		Future<Boolean> fut = service.submit(() -> {
+			try {
+				PreparedStatement statement = db.getConnection().prepareStatement("select * from kingdoms where name = ?");
+				statement.setString(1, name);
+				ResultSet rs = statement.executeQuery();
+				while (rs.next()) {
+					if (rs.getString("name") != null) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+				return false;
+			} catch (SQLException e) {
+				service.shutdown();
+				System.out.println("Error performing SQL query: " + e.getMessage() + " (" + e.getClass().getSimpleName() + ")");
+				return false;
+			}
+		});
+		try {
+			service.shutdown();
+			return fut.get();
+		} catch (InterruptedException | ExecutionException e) {
+			System.out.println("Error terminating query async pool: " + e.getMessage() + " (" + e.getClass().getSimpleName() + ")");
+			return false;
+		}
+	}
+
+	public int getKingdomByName(String name) {
+		ExecutorService service = Executors.newSingleThreadExecutor();
+		Future<Integer> fut = service.submit(() -> {
+			try {
+				PreparedStatement statement = db.getConnection().prepareStatement("select * from kingdoms where name = ?");
+				statement.setString(1, name);
+				ResultSet rs = statement.executeQuery();
+				while (rs.next()) {
+					if (rs.getString("name") != null) {
+						return rs.getInt("id");
+					} else {
+						return 0;
+					}
+				}
+				return 0;
+			} catch (SQLException e) {
+				service.shutdown();
+				System.out.println("Error performing SQL query: " + e.getMessage() + " (" + e.getClass().getSimpleName() + ")");
+				return 0;
+			}
+		});
+		try {
+			service.shutdown();
+			return fut.get();
+		} catch (InterruptedException | ExecutionException e) {
+			System.out.println("Error terminating query async pool: " + e.getMessage() + " (" + e.getClass().getSimpleName() + ")");
+			return 0;
+		}
+	}
+
+
+	private void saveKingdom(boolean single, Kingdom kingdom) {
+		try {
+			PreparedStatement stmt = db.getConnection().prepareStatement("UPDATE kingdoms" +
+					" SET `name` = ?, `leader` = ?, `tag` = ?, `bank` = ?" +
+					"WHERE id = ?;");
+			stmt.setString(1, kingdom.getName());
+			stmt.setString(2, kingdom.getLeader());
+			stmt.setString(3, kingdom.getTag());
+			stmt.setInt(4, kingdom.getBank());
+			stmt.setInt(5, kingdom.getId());
+			stmt.executeUpdate();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		if (single) {
+			kingdoms.remove(kingdom.getId());
+		}
+	}
+
+	public void createNewKingdom(Player p, String name, int random_id) {
+		db.insertKingdom(random_id, name, p.getUniqueId().toString(), "none", 0);
+		fetchKingdom(random_id);
+	}
+
+
+	public HashMap<Integer, Kingdom> getKingdoms() {
+		return kingdoms;
+	}
 }

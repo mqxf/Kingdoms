@@ -1,20 +1,12 @@
 package com.kingdomsofargus.kingdoms.kingdom.impl;
 
-import org.bukkit.Bukkit;
+import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.gui.kingdom.KingdomCreatePlayerUI;
+import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.kingdomsofargus.kingdoms.Kingdoms;
-import com.kingdomsofargus.kingdoms.gui.kingdom.KingdomCreateGUI;
-import com.kingdomsofargus.kingdoms.gui.kingdom.KingdomCreatePlayerUI;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomExecutor;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
-import com.kingdomsofargus.kingdoms.utils.Utils;
-import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class KingdomCreateArgument extends CommandArgument {
 
@@ -55,21 +47,20 @@ public class KingdomCreateArgument extends CommandArgument {
         	return true;
         }
         
-        if (KingdomManager.kingdomExists(name)) {
+        if (!Kingdoms.getCore().getKindomManager().kingdomExists(name)) {
         	sender.sendMessage(ChatColor.RED + "That name is already taken!");
         	return true;
         }
         
         Player player = (Player) sender;
-        String kingdom = KingdomPlayer.getKingdom(player.getUniqueId());
-        if (!kingdom.equals("NONE")) {
+        int kingdom = Kingdoms.getCore().getUserManager().getUser(player).getKingdom_id();
+        if (kingdom != 0) {
         	sender.sendMessage(ChatColor.RED + "You are already in a kingdom!");
         	return true;
         } else {
         
         KingdomCreatePlayerUI.menuCountdown(player);
-        Kingdoms.getInstance().kingdom.put(player, name);
-        
+        //Kingdoms.getCore().kingdom.put(player, name);
         }        
 		return false;
 	}

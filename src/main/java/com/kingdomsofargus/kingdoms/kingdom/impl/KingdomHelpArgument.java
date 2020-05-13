@@ -9,7 +9,6 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kingdomsofargus.kingdoms.kingdom.KingdomExecutor;
 import com.kingdomsofargus.kingdoms.utils.JavaUtils;
-import com.kingdomsofargus.kingdoms.utils.Utils;
 import com.kingdomsofargus.kingdoms.utils.command.BukkitUtils;
 import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
 
@@ -65,7 +64,7 @@ public class KingdomHelpArgument extends CommandArgument {
                 if (argument.isPlayerOnly() && !isPlayer) continue;
 
                 count++;
-                pages.get(val).add(ChatColor.YELLOW + "/" + label + ' ' + argument.getName() + " » " + ChatColor.GRAY + argument.getDescription());
+                pages.get(val).add(ChatColor.YELLOW + "/" + label + ' ' + argument.getName() + " ï¿½ " + ChatColor.GRAY + argument.getDescription());
                 if (count % HELP_PER_PAGE == 0) {
                     val++;
                 }

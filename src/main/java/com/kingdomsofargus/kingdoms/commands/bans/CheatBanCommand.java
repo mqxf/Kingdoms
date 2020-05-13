@@ -5,7 +5,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.mozilla.javascript.tools.debugger.Main;
 
 import com.kingdomsofargus.kingdoms.Kingdoms;
 import com.kingdomsofargus.kingdoms.gui.bans.CheatBanGUI;
@@ -20,7 +19,7 @@ public class CheatBanCommand implements CommandExecutor {
 			if (player.hasPermission("commands.ban")) {
 				if (args.length == 1) {
 					Player p = Bukkit.getPlayer(args[0]);
-					Kingdoms.getInstance().BANUI.put(player, p);
+					Kingdoms.getCore().BANUI.put(player, p);
 					CheatBanGUI.applyBanUI(p, player, 1);
 				}
 				else {
@@ -32,7 +31,7 @@ public class CheatBanCommand implements CommandExecutor {
 			if (args.length == 3) {
 				Player player = Bukkit.getPlayer(args[0]);
 				if (args[2].length() == 2) {
-					Kingdoms.getInstance().banPlayer(args[2], player, Integer.parseInt(args[1]));
+					Kingdoms.getCore().banPlayer(args[2], player, Integer.parseInt(args[1]));
 				}
 			}
 		}

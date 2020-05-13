@@ -1,8 +1,8 @@
 package com.kingdomsofargus.kingdoms.gui.kingdom;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.utils.ItemBuilder;
+import com.kingdomsofargus.kingdoms.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -11,12 +11,8 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
-import com.kingdomsofargus.kingdoms.utils.ItemBuilder;
-import com.kingdomsofargus.kingdoms.utils.Utils;
-
-import net.md_5.bungee.api.ChatColor;
-import scala.collection.immutable.ArraySeq.ofRef;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KingdomCreateGUI {
 	
@@ -31,7 +27,7 @@ public class KingdomCreateGUI {
 		}
 		
 		//13
-		ItemStack gender = ItemBuilder.createItem(Material.FEATHER, "&cConfirm gender &7(" + KingdomPlayer.getGender(player.getUniqueId()) + ")", 1);
+		ItemStack gender = ItemBuilder.createItem(Material.FEATHER, "&cConfirm gender &7(" + Kingdoms.getCore().getUserManager().getUser(player).getGender() + ")", 1);
 		
 		ItemStack pane = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
 		ItemMeta paneMeta = pane.getItemMeta();

@@ -1,17 +1,15 @@
 package com.kingdomsofargus.kingdoms.commands.economy;
 
+import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.user.User;
+import com.kingdomsofargus.kingdoms.utils.Utils;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
-import com.kingdomsofargus.kingdoms.sql.Methods;
-import com.kingdomsofargus.kingdoms.utils.Utils;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class BalanceCommand implements CommandExecutor {
 
@@ -23,10 +21,10 @@ public class BalanceCommand implements CommandExecutor {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "You cannot execute this command as console");
 		} else {
 			Player player = (Player) sender;
-			
+			User user = Kingdoms.getCore().getUserManager().getUser(player);
 			if (args.length == 0) {
-				double bankBalance = KingdomPlayer.getBankBalance(player.getUniqueId());
-				double purseBalance = KingdomPlayer.getPurseBalance(player.getUniqueId());
+				double bankBalance = user.getBank_coins();
+				double purseBalance = user.getPurse_coins();
 				player.sendMessage(Utils.chat("&7&m--------------------"));
 				player.sendMessage(Utils.chat("&6&lYour Balance"));
 				player.sendMessage(Utils.chat("&7&m--------------------"));
@@ -38,9 +36,9 @@ public class BalanceCommand implements CommandExecutor {
 			if (args.length == 1) {
 				if (Bukkit.getPlayer(args[0]) != null) {
 					Player target = Bukkit.getPlayer(args[0]);
-					
-					double bankBalance = KingdomPlayer.getBankBalance(target.getUniqueId());
-					double purseBalance = KingdomPlayer.getPurseBalance(target.getUniqueId());
+					User targetUser = Kingdoms.getCore().getUserManager().getUser(target);
+					double bankBalance = targetUser.getBank_coins();
+					double purseBalance = targetUser.getPurse_coins();
 					
 					player.sendMessage(Utils.chat("&7&m--------------------"));
 					player.sendMessage(Utils.chat("&6&l" + target.getName() + "'s Balance"));
@@ -51,8 +49,9 @@ public class BalanceCommand implements CommandExecutor {
 				}
 				else {
 					OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
-					
-					if (Methods.playerExists(target.getUniqueId())) {
+					// TODO OFFLINE
+					/**
+					if (Kingdoms.getCore().getUserManager().getUser(player) != null) {
 						
 						double purse = KingdomPlayer.getPurseBalance(target.getUniqueId());
 						double bank = KingdomPlayer.getBankBalance(target.getUniqueId());
@@ -66,10 +65,11 @@ public class BalanceCommand implements CommandExecutor {
 					} else {
 						player.sendMessage(ChatColor.RED + "That player has not played before.");
 					}
-				}
+				} **/
 			}
+		}
 		}
 		return false;
 	}
 
-}
+	}

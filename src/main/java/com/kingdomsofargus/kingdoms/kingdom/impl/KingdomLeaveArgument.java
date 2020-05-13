@@ -1,18 +1,14 @@
 package com.kingdomsofargus.kingdoms.kingdom.impl;
 
+import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.user.User;
+import com.kingdomsofargus.kingdoms.utils.Utils;
+import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.kingdomsofargus.kingdoms.Kingdoms;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomExecutor;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
-import com.kingdomsofargus.kingdoms.utils.Utils;
-import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class KingdomLeaveArgument extends CommandArgument {
 
@@ -43,24 +39,22 @@ public class KingdomLeaveArgument extends CommandArgument {
         
         
         Player player = (Player) sender;
-        String kingdom = KingdomPlayer.getKingdom(player.getUniqueId());
+		User user = Kingdoms.getCore().getUserManager().getUser(player);
+        int kingdom = Kingdoms.getCore().getUserManager().getUser(player).getKingdom_id();
         
-        if (kingdom.equals("NONE")) {
+        if (kingdom == 0) {
         	sender.sendMessage(ChatColor.RED + "You aren't in a kingdom!");
         	return true;
         }
-        if (KingdomPlayer.getClass(player.getUniqueId()).equals("King")
-        		|| KingdomPlayer.getClass(player.getUniqueId()).equals("Queen")) {
+        if (Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("King")
+        		|| Kingdoms.getCore().getUserManager().getUser(player).getClass().equals("Queen")) {
         	player.sendMessage(Utils.chat("&eYou are a leader, do /k disband to disband your kingdom."));
         	} else {
-        		KingdomPlayer.setClass(player.getUniqueId(), "Wanderer");
-        		KingdomPlayer.setKingdom(player.getUniqueId(), "NONE");
+        		Kingdoms.getCore().getUserManager().getUser(player).setuClass("Wanderer");
+			    Kingdoms.getCore().getUserManager().getUser(player).setKingdom_id(0);
         		player.sendMessage(ChatColor.YELLOW + "Successfully left the kingdom");
-        		
-        		if (Bukkit.getPlayer(KingdomManager.getLeader(kingdom)) != null) {
-        			Player leader = Bukkit.getPlayer(KingdomManager.getLeader(kingdom));
-        			leader.sendMessage(ChatColor.RED + player.getName() + " left your kingdom!");
-        	}
+        		Player leader = Bukkit.getPlayer(Kingdoms.getCore().getKindomManager().getKingdom(user.getKingdom_id()).getLeader());
+        		leader.sendMessage(ChatColor.RED + player.getName() + " left your kingdom!");
         }        
 		return false;
 	}

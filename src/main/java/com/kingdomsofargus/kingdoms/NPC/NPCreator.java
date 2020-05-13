@@ -1,23 +1,15 @@
 package com.kingdomsofargus.kingdoms.NPC;
 
-import javax.management.InstanceAlreadyExistsException;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.kingdomsofargus.kingdoms.utils.Utils;
-import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.event.NPCDamageByEntityEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.api.trait.trait.Equipment;

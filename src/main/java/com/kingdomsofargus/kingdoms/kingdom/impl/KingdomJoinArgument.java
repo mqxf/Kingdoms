@@ -1,22 +1,11 @@
 package com.kingdomsofargus.kingdoms.kingdom.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
+import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.kingdomsofargus.kingdoms.Kingdoms;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomExecutor;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
-import com.kingdomsofargus.kingdoms.utils.Utils;
-import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class KingdomJoinArgument extends CommandArgument {
 
@@ -48,14 +37,14 @@ public class KingdomJoinArgument extends CommandArgument {
         Player player = (Player) sender;
         String name = args[1];
 
-        if (!KingdomManager.kingdomExists(name)) {
+        if (!Kingdoms.getCore().getKindomManager().kingdomExists(name)) {
         	player.sendMessage(ChatColor.RED + "That kingdom does not exist!");
         	return true;
         	}
         
-        if (KingdomPlayer.getKingdom(player.getUniqueId()).equals("NONE")) {
+        if (Kingdoms.getCore().getUserManager().getUser(player).getKingdom_id() == 0) {
         	player.sendMessage(ChatColor.RED + "Successfully joined the kingdom.");
-        	KingdomPlayer.setKingdom(player.getUniqueId(), name);
+        	// TODO Create join system / Member Sysytem
         } else {
         	player.sendMessage(ChatColor.RED + "You are already in a kingdom!");
         	return true;

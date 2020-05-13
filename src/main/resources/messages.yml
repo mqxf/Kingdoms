@@ -1,0 +1,11 @@
+messages:
+  bank-coins-added-user: '&7(&cKingdoms&7) &fYou have added &e{TOKENS}&f tokens to &4{PLAYER}'
+  bank-coins-remove-user: '&7(&cKingdoms&7) &fYou have removed &e{TOKENS}&f tokens from &4{PLAYER}'
+  bank-coins-set-user: '&7(&cKingdoms&7) &fYou have set &4{PLAYER}s&f tokens to &e{TOKENS}'
+  purse-coinscoins-added-user: '&7(&cKingdoms&7) &fYou have added &6{COINS}&f coins to &4{PLAYER}'
+  purse-coinscoins-remove-user: '&7(&cKingdoms&7) &fYou have removed &6{COINS} &fcoins from &4{PLAYER}'
+  purse-coinscoins-set-user: '&7(&cKingdoms&7) &fYou have set &4{PLAYER}&f coins to &6{COINS}'
+  rank-update-user: '&7(&cKingdoms&7) &fYou have updated their rank'
+  unknown-user: '&7(&cKingdoms&7) &cThis is not a valid player'
+  rank-updated: '&7(&cKingdoms&7) &cYou have updated &f{PLAYER}'s &crank to &f{RANK}'
+

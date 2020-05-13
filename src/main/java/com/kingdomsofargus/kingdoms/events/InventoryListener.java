@@ -1,59 +1,51 @@
 package com.kingdomsofargus.kingdoms.events;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.gui.kingdom.KingdomCreateGUI;
+import com.kingdomsofargus.kingdoms.gui.kingdom.KingdomCreatePlayerUI;
+import com.kingdomsofargus.kingdoms.user.User;
+import com.kingdomsofargus.kingdoms.utils.MergeResult;
+import com.kingdomsofargus.kingdoms.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener; 
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.minecraft.server.v1_15_R1.EntityBee.e;
-import net.royawesome.jlibnoise.module.combiner.Add;
-import scala.annotation.meta.getter;
-
-import com.kingdomsofargus.kingdoms.Kingdoms;
-import com.kingdomsofargus.kingdoms.gui.kingdom.KingdomCreateGUI;
-import com.kingdomsofargus.kingdoms.gui.kingdom.KingdomCreatePlayerUI;
-import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
-import com.kingdomsofargus.kingdoms.player.KingdomPlayer;
-import com.kingdomsofargus.kingdoms.utils.MergeResult;
-import com.kingdomsofargus.kingdoms.utils.Utils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class InventoryListener implements Listener {
 	
 	@EventHandler
 	public void onClickEvent(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
-		
+		User user = Kingdoms.getCore().getUserManager().getUser(player);
 		if (event.getView().getTitle().contains("Gender Picker")) {
 			event.setCancelled(true);
 			if (event.getCurrentItem().getItemMeta().getDisplayName().equals(Utils.chat("&9King"))) {
-				KingdomPlayer.setGender(player.getUniqueId(), "Male");
+
+				user.setGender("Male");
+
 				player.sendMessage(Utils.chat("&eYou are now a &9&lKing"));
 				player.closeInventory();
 			}  
 			if (event.getCurrentItem().getItemMeta().getDisplayName().equals(Utils.chat("&cQueen"))) {
-				KingdomPlayer.setGender(player.getUniqueId(), "Female"); 
+				user.setGender("Female");
 				player.sendMessage(Utils.chat("&eYou are now a &c&lQueen"));
 				player.closeInventory();
 			}
@@ -63,11 +55,11 @@ public class InventoryListener implements Listener {
 		if (event.getView().getTitle().contains("Confirm gender")) {
 			event.setCancelled(true);
 			if (event.getCurrentItem().getItemMeta().getDisplayName().equals(Utils.chat("&9King"))) {
-				KingdomPlayer.setGender(player.getUniqueId(), "Male");
+				user.setGender("Male");
 				KingdomCreatePlayerUI.menuCountdown(player);
 			}  
 			if (event.getCurrentItem().getItemMeta().getDisplayName().equals(Utils.chat("&cQueen"))) {
-				KingdomPlayer.setGender(player.getUniqueId(), "Female");
+				user.setGender("Female");
 				KingdomCreatePlayerUI.menuCountdown(player);
 			}
 		}
@@ -76,16 +68,16 @@ public class InventoryListener implements Listener {
 			String name = event.getCurrentItem().getItemMeta().getDisplayName();
 			event.setCancelled(true);
 			if (name.contains("Create")) {
-				String kingdom = Kingdoms.getInstance().kingdom.get(player);
+				String kingdom = Kingdoms.getCore().kingdom.get(player);
 				player.closeInventory();
-				KingdomManager.createKingdom(kingdom, player.getName());
-		        KingdomPlayer.setKingdom(player.getUniqueId(), kingdom);
+				Random rand = new Random();
+				int random_id = rand.nextInt(10000);
+				Kingdoms.getCore().getKindomManager().createNewKingdom(player, name, random_id);
 		        
-		        
-		        if (KingdomPlayer.getGender(player.getUniqueId()).equals("Male")) {
-		        	KingdomPlayer.setClass(player.getUniqueId(), "King");
-		        } else if (KingdomPlayer.getGender(player.getUniqueId()).equals("Female")) {
-		        	KingdomPlayer.setClass(player.getUniqueId(), "Queen");
+		        if (user.getGender().equalsIgnoreCase("Male")) {
+		        	user.setuClass("King");
+		        } else if (user.getGender().equalsIgnoreCase("Queen")) {
+					user.setuClass("Queen");
 		        } else {
 		        	player.sendMessage("No Gender Specified");
 		        }
@@ -104,13 +96,14 @@ public class InventoryListener implements Listener {
 			ItemStack item = event.getCurrentItem();
 			String name = item.getItemMeta().getDisplayName();
 			if (name.contains("Yes")) {
-				String kingdom = KingdomPlayer.getKingdom(player.getUniqueId());
+				int kingdom = Kingdoms.getCore().getUserManager().getUser(player).getKingdom_id();
 				player.closeInventory();
 				Bukkit.broadcastMessage(Utils.chat("&eThe kingdom &6&l" + kingdom + "&e has been disbanded by &6&l" + player.getName()));
 		        player.sendMessage(ChatColor.YELLOW + "Successfully disbanded kingdom " + ChatColor.GRAY + kingdom);
-	        	KingdomManager.deleteKingdom(kingdom);
-	        	KingdomPlayer.setKingdom(player.getUniqueId(), "NONE");
-	        	KingdomPlayer.setClass(player.getUniqueId(), "Wanderer");
+				/**
+				 * TODO
+				 */
+				user.setuClass("Wanderer");
 			}
 			if (name.contains("No")) {
 				player.closeInventory();
@@ -185,11 +178,11 @@ public class InventoryListener implements Listener {
 				}
 				if (event.getSlot() == 13) {
 					Inventory inv = event.getInventory();
-					if (inv.getItem(29) != null || inv.getItem(33) != null || !Kingdoms.getInstance().combined.get(player)) {
+					if (inv.getItem(29) != null || inv.getItem(33) != null || !Kingdoms.getCore().combined.get(player)) {
 						event.setCancelled(true);
 					}
 					else {
-						Kingdoms.getInstance().combined.put(player, false);
+						Kingdoms.getCore().combined.put(player, false);
 						new BukkitRunnable() {
 							
 							@Override
@@ -212,7 +205,7 @@ public class InventoryListener implements Listener {
 						event.getInventory().setItem(14, r);
 						event.getInventory().setItem(15, r);
 						event.getInventory().setItem(24, r);
-						Kingdoms.getInstance().combined.put(player, true);
+						Kingdoms.getCore().combined.put(player, true);
 						player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 1);
 						
 						new BukkitRunnable() {
@@ -343,11 +336,11 @@ public class InventoryListener implements Listener {
 		if (e.getView().getTitle().contains("Anvil")) {
 			//13, 29, 33
 			
-			if (Kingdoms.getInstance().combined.get(player)) {
+			if (Kingdoms.getCore().combined.get(player)) {
 				player.getInventory().addItem(e.getInventory().getItem(13));
 				player.getInventory().addItem(e.getInventory().getItem(29));
 				player.getInventory().addItem(e.getInventory().getItem(33));
-				Kingdoms.getInstance().combined.put(player, false);
+				Kingdoms.getCore().combined.put(player, false);
 			}
 			else {
 				player.getInventory().addItem(e.getInventory().getItem(29));
