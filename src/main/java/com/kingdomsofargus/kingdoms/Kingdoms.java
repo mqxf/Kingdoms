@@ -2,6 +2,7 @@ package com.kingdomsofargus.kingdoms;
 
 import com.kingdomsofargus.kingdoms.api.DataFile;
 import com.kingdomsofargus.kingdoms.commands.CheckpointCommand;
+import com.kingdomsofargus.kingdoms.commands.CoindCMD;
 import com.kingdomsofargus.kingdoms.commands.SBToggleCommand;
 import com.kingdomsofargus.kingdoms.commands.bans.CheatBanCommand;
 import com.kingdomsofargus.kingdoms.commands.disguise.DisguiseCommand;
@@ -15,13 +16,12 @@ import com.kingdomsofargus.kingdoms.commands.staff.FlyCommand;
 import com.kingdomsofargus.kingdoms.commands.staff.GamemodeCommand;
 import com.kingdomsofargus.kingdoms.commands.staff.HealCommand;
 import com.kingdomsofargus.kingdoms.commands.staff.HealthCommand;
-import com.kingdomsofargus.kingdoms.events.*;
-import com.kingdomsofargus.kingdoms.events.anticheat.MoveListener;
+import com.kingdomsofargus.kingdoms.events.ChatListener;
+import com.kingdomsofargus.kingdoms.events.JoinListener;
 import com.kingdomsofargus.kingdoms.kingdom.KingdomExecutor;
 import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
 import com.kingdomsofargus.kingdoms.player.User;
 import com.kingdomsofargus.kingdoms.sql.Database;
-import com.kingdomsofargus.kingdoms.tasks.BackupTask;
 import com.kingdomsofargus.kingdoms.user.Rank;
 import com.kingdomsofargus.kingdoms.user.UserManager;
 import com.kingdomsofargus.kingdoms.utils.Utils;
@@ -170,9 +170,11 @@ public class Kingdoms extends JavaPlugin {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				new BackupTask(core);
+				Kingdoms.getCore().getUserManager().saveUsers();
+				Kingdoms.getCore().getUserManager().getUsers().clear();
+				System.out.println("[Kingdoms] A quick backup was saved -- Database updated");
 			}
-		}.runTaskTimerAsynchronously(core, 1L, 600 * 20);
+		}.runTaskTimerAsynchronously(core, 20, 600 * 20);
 
 		loadRanks();
 		registerCommands();
@@ -191,6 +193,7 @@ public class Kingdoms extends JavaPlugin {
 	private void registerEvents() {
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new JoinListener(), this);
+		/**
 		pm.registerEvents(new QuitListener(), this);
 		pm.registerEvents(new InventoryListener(), this);
 		pm.registerEvents(new NPCEvent(), this);
@@ -198,6 +201,7 @@ public class Kingdoms extends JavaPlugin {
 		pm.registerEvents(new PickUpListener(), this);
 		pm.registerEvents(new ClickListener(), this);
 		pm.registerEvents(new MoveListener(), this);
+		 **/
 	}
 
 	private void registerCommands() {
@@ -207,7 +211,7 @@ public class Kingdoms extends JavaPlugin {
 		getCommand("gender").setExecutor(new GenderCommand());
 		getCommand("balance").setExecutor(new BalanceCommand());
 		getCommand("disguise").setExecutor(new DisguiseCommand());
-
+		getCommand("coins").setExecutor(new CoindCMD());
 		//KINGDOM Commands
 		getCommand("kingdom").setExecutor(new KingdomExecutor(this));
 

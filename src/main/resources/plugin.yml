@@ -8,6 +8,7 @@ commands:
   gender:
   rank:
   unban:
+  coins:
   ban:
     aliases: [tempban]
   cheatban:

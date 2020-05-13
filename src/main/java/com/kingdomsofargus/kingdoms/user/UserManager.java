@@ -25,12 +25,17 @@ public class UserManager {
     public User getUser(Player p) {
         if (users.isEmpty()) {
             fetchUser(p);
+            System.out.println("Fetching Users....");
         }
         if (users.keySet().contains(p.getUniqueId())) {
+            System.out.println("User was in KeySet");
             return users.get(p.getUniqueId());
+
         } else {
             fetchUser(p);
+            System.out.println("last before");
             if (users.keySet().contains(p.getUniqueId())) {
+                System.out.println("last");
                 return users.get(p.getUniqueId());
             }
         }

@@ -1,10 +1,6 @@
 package com.kingdomsofargus.kingdoms.events;
 
-import com.kingdomsofargus.kingdoms.Kingdoms;
-import com.kingdomsofargus.kingdoms.gui.GenderGUI;
-import com.kingdomsofargus.kingdoms.user.User;
 import com.kingdomsofargus.kingdoms.utils.Utils;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,7 +24,7 @@ public class JoinListener implements Listener {
 		Kingdoms.getCore().checkpointID.put(player, null);
 
 		Location location = player.getLocation();
-**/
+
 		if (!(Kingdoms.getCore().getUserManager().userExists(player.getUniqueId().toString()))) {
 			player.sendMessage(ChatColor.GREEN + "Created Profile");
 
@@ -39,7 +35,7 @@ public class JoinListener implements Listener {
 		//	CheckpointManager.createNewCheckpoint(CheckpointCommand.getCheckpoint(1), player);
 		} else {
 		player.sendMessage(ChatColor.GREEN + "Loaded Profile");
-		new User(player.getUniqueId().toString());
+		//new User(player.getUniqueId().toString());
 		// TODO
 		//CheckpointManager.createNewCheckpoint(CheckpointCommand.getCheckpoint(1), player);
 		}

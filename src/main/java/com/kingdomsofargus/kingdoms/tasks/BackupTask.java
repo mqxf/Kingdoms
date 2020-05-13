@@ -3,8 +3,6 @@ package com.kingdomsofargus.kingdoms.tasks;
 import com.kingdomsofargus.kingdoms.Kingdoms;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.logging.Level;
-
 public class BackupTask extends BukkitRunnable {
 
     private Kingdoms core;
@@ -15,8 +13,9 @@ public class BackupTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        core.getUserManager().saveUsers();
-        core.getUserManager().getUsers().clear();
-        core.getServer().getLogger().log(Level.INFO, "[Kingdoms] A quick backup was saved -- Database updated");
+        System.out.println("Test");
+        Kingdoms.getCore().getUserManager().saveUsers();
+        Kingdoms.getCore().getUserManager().getUsers().clear();
+        System.out.println("[Kingdoms] A quick backup was saved -- Database updated");
     }
 }
