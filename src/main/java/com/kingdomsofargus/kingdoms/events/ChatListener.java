@@ -1,6 +1,7 @@
 package com.kingdomsofargus.kingdoms.events;
 
 import com.kingdomsofargus.kingdoms.Kingdoms;
+import com.kingdomsofargus.kingdoms.kingdom.Kingdom;
 import com.kingdomsofargus.kingdoms.user.Rank;
 import com.kingdomsofargus.kingdoms.user.User;
 import com.kingdomsofargus.kingdoms.utils.Color;
@@ -45,17 +46,20 @@ public class ChatListener implements Listener {
 
 		values.put("PLAYER", event.getPlayer().getName());
 		Rank rank = Kingdoms.getCore().getIdToRank().get(user.getRank());
+		Kingdom kingdom = Kingdoms.getCore().getKindomManager().getKingdom(user.getKingdom_id());
+		values.put("MESSAGE", event.getMessage());
+		values.put("KINGDOM_NAME", kingdom.getName());
+		values.put("KINGDOM_TAG", kingdom.getTag());
+		values.put("RANK", rank.getPrefix());
 
 		if (rank.getId().equals(core.getDefaultRank().getId())) {
 			event.setMessage(event.getMessage().replaceAll("%", "%%"));
-			values.put("MESSAGE", event.getMessage());
+
 			event.setFormat(Color.color(Placeholders.replaceStrPlaceholders(Kingdoms.getCore().getConfigFile().getString("chat.format.default"), values)));
 			return;
 		}
-		values.put("RANK", rank.getPrefix());
 
 		event.setMessage(event.getMessage().replaceAll("%", "%%"));
-		values.put("MESSAGE", event.getMessage());
 		event.setFormat(Color.color(Placeholders.replaceStrPlaceholders(Kingdoms.getCore().getConfigFile().getString("chat.format." + user.getRank().toLowerCase()), values)));
 
 

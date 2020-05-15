@@ -1,6 +1,6 @@
 chat:
   format:
-    owner: '&4{PLAYER} &8» &c{MESSAGE}'
+    owner: '&7[&a{KINGDOM_NAME}&7] [&d{KINGDOM_TAG}&7] {RANK} &4{PLAYER} &8» &c{MESSAGE}'
     manager: '&4{PLAYER} &8» &c{MESSAGE}'
     dev: '&4{PLAYER} &8» &c{MESSAGE}'
     srmod: '&3{PLAYER} &8» &a{MESSAGE}'

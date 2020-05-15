@@ -51,10 +51,10 @@ public class KingdomManager {
 							kingdom.setLeader(response.getString("leader"));
 							kingdom.setTag(response.getString("tag"));
 							kingdom.loadMembers(response.getString("members"));
-							kingdom.setAllies(response.getString("allies"));
-							kingdom.setNeutral(response.getString("neutral"));
+							kingdom.loadNeutral(response.getString("neutral"));
+							kingdom.loadAllies(response.getString("allies"));
+							kingdom.loadEnemys(response.getString("enemy"));
 							kingdom.setIn_War(response.getString("in_war"));
-							kingdom.setEnemy(response.getString("enemy"));
 							// TODO setup roles
 							kingdom.setId(response.getInt("id"));
 							kingdom.setAnnouncement(response.getString("announcement"));
@@ -145,9 +145,9 @@ public class KingdomManager {
 			stmt.setString(2, kingdom.getLeader());
 			stmt.setString(3, kingdom.getTag());
 			stmt.setInt(4, kingdom.getBank());
-			stmt.setString(5, kingdom.getAllies());
-			stmt.setString(6, kingdom.getEnemy());
-			stmt.setString(7, kingdom.getNeutral());
+			stmt.setString(5, kingdom.alliesToString());
+			stmt.setString(6, kingdom.enemysToString());
+			stmt.setString(7, kingdom.neutral.toString());
 			stmt.setString(8, kingdom.membersToString());
 			stmt.setInt(9, kingdom.getId());
 			stmt.executeUpdate();

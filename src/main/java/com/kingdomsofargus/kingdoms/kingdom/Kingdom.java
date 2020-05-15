@@ -31,9 +31,13 @@ public class Kingdom {
     /**
      * Relationships
      */
-    private String allies;
-    private String neutral;
-    private String enemy;
+
+    private String alliesString;
+    private String neutralString;
+    private String enemyString;
+    public List<String> allies;
+    public List<String> neutral;
+    public List<String> enemy;
     private String in_War;
     private int bank;
 
@@ -47,6 +51,33 @@ public class Kingdom {
     public String membersToString() {
         StringBuilder builder = new StringBuilder();
         for (String s : members) {
+            builder.append(s);
+            builder.append(":");
+        }
+        return builder.toString();
+    }
+
+    public String alliesToString() {
+        StringBuilder builder = new StringBuilder();
+        for (String s : allies) {
+            builder.append(s);
+            builder.append(":");
+        }
+        return builder.toString();
+    }
+
+    public String enemysToString() {
+        StringBuilder builder = new StringBuilder();
+        for (String s : enemy) {
+            builder.append(s);
+            builder.append(":");
+        }
+        return builder.toString();
+    }
+
+    public String neutralToString() {
+        StringBuilder builder = new StringBuilder();
+        for (String s : neutral) {
             builder.append(s);
             builder.append(":");
         }
@@ -99,21 +130,22 @@ public class Kingdom {
         return magicians;
     }
 
-    public String getAllies() {
-        return allies;
+    public String getAlliesString() {
+        return alliesString;
     }
 
-    public String getNeutral() {
-        return neutral;
+    public String getNeutralString() {
+        return neutralString;
+    }
+
+    public String getEnemyString() {
+        return enemyString;
     }
 
     public String getMemberString() {
         return memberString;
     }
 
-    public String getEnemy() {
-        return enemy;
-    }
 
     public String getIn_War() {
         return in_War;
@@ -140,6 +172,78 @@ public class Kingdom {
         if (!members.contains(perm)) {
             memberString = memberString + ":" + perm;
             members.add(perm);
+        }
+    }
+
+    public void loadAllies(String s) {
+        allies = new ArrayList<>();
+        alliesString = s;
+        if (s != null) {
+            String[] parts = s.split(":");
+            for (String part : parts) {
+                if (part != null) {
+                    allies.add(part);
+                }
+            }
+        }
+    }
+
+    public void reloadAllies() {
+        loadAllies(alliesString);
+    }
+
+    public void addAlly(String perm) {
+        if (!allies.contains(perm)) {
+            alliesString = alliesString + ":" + perm;
+            allies.add(perm);
+        }
+    }
+
+    public void loadEnemys(String s) {
+        enemy = new ArrayList<>();
+        enemyString = s;
+        if (s != null) {
+            String[] parts = s.split(":");
+            for (String part : parts) {
+                if (part != null) {
+                    enemy.add(part);
+                }
+            }
+        }
+    }
+
+    public void reloadEnemys() {
+        loadEnemys(enemyString);
+    }
+
+    public void addEnemy(String perm) {
+        if (!enemy.contains(perm)) {
+            enemyString = enemyString + ":" + perm;
+            enemy.add(perm);
+        }
+    }
+
+    public void loadNeutral(String s) {
+        neutral = new ArrayList<>();
+        neutralString = s;
+        if (s != null) {
+            String[] parts = s.split(":");
+            for (String part : parts) {
+                if (part != null) {
+                    neutral.add(part);
+                }
+            }
+        }
+    }
+
+    public void reloadNeutral() {
+        loadNeutral(neutralString);
+    }
+
+    public void addNeutral(String perm) {
+        if (!neutral.contains(perm)) {
+            neutralString = neutralString + ":" + perm;
+            neutral.add(perm);
         }
     }
 
@@ -188,17 +292,6 @@ public class Kingdom {
         this.magicians = magicians;
     }
 
-    public void setAllies(String allies) {
-        this.allies = allies;
-    }
-
-    public void setNeutral(String neutral) {
-        this.neutral = neutral;
-    }
-
-    public void setEnemy(String enemy) {
-        this.enemy = enemy;
-    }
 
     public void setIn_War(String in_War) {
         this.in_War = in_War;

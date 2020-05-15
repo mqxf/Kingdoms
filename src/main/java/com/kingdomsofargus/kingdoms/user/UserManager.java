@@ -3,8 +3,14 @@ package com.kingdomsofargus.kingdoms.user;
 import com.kingdomsofargus.kingdoms.Kingdoms;
 import com.kingdomsofargus.kingdoms.sql.Callback;
 import com.kingdomsofargus.kingdoms.sql.Database;
+import org.bukkit.craftbukkit.libs.org.apache.commons.io.IOUtils;
 import org.bukkit.entity.Player;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.ParseException;
 
+import java.io.IOException;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,6 +47,7 @@ public class UserManager {
         }
         return null;
     }
+
 
     public String getOfflineUUID(String name) {
         ExecutorService service = Executors.newSingleThreadExecutor();
@@ -135,6 +142,29 @@ public class UserManager {
         }
         if (single) {
             users.remove(UUID.fromString(user.getUuid()));
+        }
+    }
+    public void saveOfflineUser(String uuid, String collumn, String value) {
+        try {
+            PreparedStatement stmt = db.getConnection().prepareStatement("UPDATE users" +
+                    " SET `" + collumn + "` = ? WHERE uuid = ?;");
+            stmt.setString(1, value);
+            stmt.setString(2, uuid);
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void saveOfflineUser(String uuid, String collumn, int integer) {
+        try {
+            PreparedStatement stmt = db.getConnection().prepareStatement("UPDATE users" +
+                    " SET `" + collumn + "` = ? WHERE uuid = ?;");
+            stmt.setInt(1, integer);
+            stmt.setString(2, uuid);
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -263,6 +293,22 @@ public class UserManager {
             return false;
         }
     }
+
+    public String getUuid(String name) {
+        String url = "https://api.mojang.com/users/profiles/minecraft/"+name;
+        try {
+            @SuppressWarnings("deprecation")
+            String UUIDJson = IOUtils.toString(new URL(url));
+            if(UUIDJson.isEmpty()) return "invalid name";
+            JSONObject UUIDObject = (JSONObject) JSONValue.parseWithException(UUIDJson);
+            return UUIDObject.get("id").toString();
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "error";
+    }
+
 
     public HashMap<UUID, User> getUsers() {
         return users;

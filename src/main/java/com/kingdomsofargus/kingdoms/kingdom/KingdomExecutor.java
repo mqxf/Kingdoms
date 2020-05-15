@@ -26,6 +26,7 @@ public class KingdomExecutor extends ArgumentExecutor {
         addArgument(new KingdomWhoArgument(plugin));
         addArgument(new KingdomJoinArgument(plugin));
         addArgument(new KingdomDiplomacyArgument(plugin));
+        addArgument(new KingdomKickArgument(plugin));
     }
 
     @Override
