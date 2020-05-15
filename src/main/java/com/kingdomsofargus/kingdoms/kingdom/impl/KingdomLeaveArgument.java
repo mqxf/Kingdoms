@@ -52,10 +52,12 @@ public class KingdomLeaveArgument extends CommandArgument {
         	player.sendMessage(Utils.chat("&eYou are a leader, do /k disband to disband your kingdom."));
         	} else {
 			Kingdom userKingdom =  Kingdoms.getCore().getKindomManager().getKingdom(kingdom);
-				String members = userKingdom.getMembers();
-				String regex = "\\s*\\b:" + player.getUniqueId() +"\\b\\s*";
-				String newMembers = members.replaceAll(regex, "");
-				userKingdom.setMembers(newMembers);
+
+				if (userKingdom.members.contains(player.getUniqueId().toString())) {
+					userKingdom.memberString = userKingdom.memberString.replace(player.getUniqueId().toString(), "");
+					userKingdom.members.remove(player.getUniqueId().toString());
+					userKingdom.reloadMembers();
+					}
         		Kingdoms.getCore().getUserManager().getUser(player).setuClass("Wanderer");
 			    Kingdoms.getCore().getUserManager().getUser(player).setKingdom_id(0);
         		player.sendMessage(ChatColor.YELLOW + "Successfully left the kingdom");

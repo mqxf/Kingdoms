@@ -1,5 +1,8 @@
 package com.kingdomsofargus.kingdoms.kingdom;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Kingdom {
 
     /**
@@ -8,8 +11,8 @@ public class Kingdom {
     private String name;
     private String leader;
     private String announcement;
-    private String invites;
-    private String members;
+    public List<String> members;
+    public String memberString;
     private String tag;
     private int id;
 
@@ -38,24 +41,18 @@ public class Kingdom {
         this.leader = leader;
         this.name = name;
         this.id = id;
-        announcement = "";
-        tag = "";
         bank = 0;
-        members = leader;
-        knights = "";
-        archers = "";
-        engineers = "";
-        blacksmiths = "";
-        excavators = "";
-        farmers = "";
-        magicians = "";
-
-        invites = "";
-
-
-        //members.add(leader);
-
     }
+
+    public String membersToString() {
+        StringBuilder builder = new StringBuilder();
+        for (String s : members) {
+            builder.append(s);
+            builder.append(":");
+        }
+        return builder.toString();
+    }
+
 
     public String getName() {
         return name;
@@ -69,9 +66,6 @@ public class Kingdom {
         return announcement;
     }
 
-    public String getInvites() {
-        return invites;
-    }
 
     public int getId() {
         return id;
@@ -113,6 +107,10 @@ public class Kingdom {
         return neutral;
     }
 
+    public String getMemberString() {
+        return memberString;
+    }
+
     public String getEnemy() {
         return enemy;
     }
@@ -121,12 +119,28 @@ public class Kingdom {
         return in_War;
     }
 
-    public String getMembers() {
-        return members;
+    public void loadMembers(String s) {
+        members = new ArrayList<>();
+        memberString = s;
+        if (s != null) {
+            String[] parts = s.split(":");
+            for (String part : parts) {
+                if (part != null) {
+                    members.add(part);
+                }
+            }
+        }
     }
 
-    public void setMembers(String members) {
-        this.members = members;
+    public void reloadMembers() {
+        loadMembers(memberString);
+    }
+
+    public void addMember(String perm) {
+        if (!members.contains(perm)) {
+            memberString = memberString + ":" + perm;
+            members.add(perm);
+        }
     }
 
     public void setName(String name) {
@@ -141,9 +155,6 @@ public class Kingdom {
         this.announcement = announcement;
     }
 
-    public void setInvites(String invites) {
-        this.invites = invites;
-    }
 
     public void setId(int id) {
         this.id = id;

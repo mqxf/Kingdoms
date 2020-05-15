@@ -3,6 +3,7 @@ package com.kingdomsofargus.kingdoms.kingdom.impl;
 import com.kingdomsofargus.kingdoms.Kingdoms;
 import com.kingdomsofargus.kingdoms.kingdom.Kingdom;
 import com.kingdomsofargus.kingdoms.user.User;
+import com.kingdomsofargus.kingdoms.utils.Color;
 import com.kingdomsofargus.kingdoms.utils.Utils;
 import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
 import net.md_5.bungee.api.ChatColor;
@@ -56,8 +57,17 @@ public class KingdomCreateArgument extends CommandArgument {
         	sender.sendMessage(ChatColor.RED + "That name is already taken!");
         	return true;
         }
+
+
         
         Player player = (Player) sender;
+		User user = Kingdoms.getCore().getUserManager().getUser(player);
+
+		if (user.getPurse_coins() < 100) {
+			player.sendMessage(Color.color("&cIt cost 100 coins to create a kingdom"));
+			return false;
+		}
+
         int kingdom = Kingdoms.getCore().getUserManager().getUser(player).getKingdom_id();
         if (kingdom != 0) {
         	sender.sendMessage(ChatColor.RED + "You are already in a kingdom!");
@@ -65,8 +75,9 @@ public class KingdomCreateArgument extends CommandArgument {
         } else {
 			Random rand = new Random();
 			int random_id = rand.nextInt(10000);
-			User user = Kingdoms.getCore().getUserManager().getUser(player);
 			Kingdoms.getCore().getKindomManager().createNewKingdom(player, name, random_id);
+			int updatedCoins = (int) (user.getPurse_coins() - 100);
+			user.setPurse_coins(updatedCoins);
 			user.setKingdom_id(random_id);
 			switch (user.getGender()) {
 				case "Male":

@@ -19,6 +19,7 @@ import com.kingdomsofargus.kingdoms.commands.staff.HealthCommand;
 import com.kingdomsofargus.kingdoms.events.*;
 import com.kingdomsofargus.kingdoms.kingdom.KingdomExecutor;
 import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
+import com.kingdomsofargus.kingdoms.kingdom.invites.InviteManager;
 import com.kingdomsofargus.kingdoms.player.User;
 import com.kingdomsofargus.kingdoms.sql.Database;
 import com.kingdomsofargus.kingdoms.user.Rank;
@@ -54,6 +55,7 @@ public class Kingdoms extends JavaPlugin {
 	private DataFile databaseFile;
 	private UserManager userManager;
 	private KingdomManager kindomManager;
+	private InviteManager inviteManager;
 	public static Kingdoms core;
 	private Map<String, Rank> idToRank = new HashMap<>();
 	/** **/
@@ -132,7 +134,7 @@ public class Kingdoms extends JavaPlugin {
 		database = new Database(this, databaseFile);
 		userManager = new UserManager(this, database);
 		kindomManager = new KingdomManager(this, database);
-
+		inviteManager = new InviteManager(this, database);
 		/**
 		ranks = new ArrayList<String>();
 		
@@ -178,6 +180,8 @@ public class Kingdoms extends JavaPlugin {
 				Kingdoms.getCore().getUserManager().getUsers().clear();
 				Kingdoms.getCore().getKindomManager().saveKingdoms();
 				Kingdoms.getCore().getKindomManager().getKingdoms().clear();
+				Kingdoms.getCore().getInviteManager().saveInvites();
+				Kingdoms.getCore().getInviteManager().getInvites().clear();
 				System.out.println("[Kingdoms] A quick backup was saved -- Database updated");
 			}
 		}.runTaskTimerAsynchronously(core, 20, 600 * 20);
@@ -274,6 +278,10 @@ public class Kingdoms extends JavaPlugin {
 		
 	}
 
+	public InviteManager getInviteManager() {
+		return inviteManager;
+	}
+
 	/**
 	public void resetViolations() {
 		new BukkitRunnable() {
@@ -287,6 +295,8 @@ public class Kingdoms extends JavaPlugin {
 			}
 		}.runTaskTimer(this, 0, 15 * 20L);
 	}**/
+
+
 
 	public UserManager getUserManager() {
 		return userManager;

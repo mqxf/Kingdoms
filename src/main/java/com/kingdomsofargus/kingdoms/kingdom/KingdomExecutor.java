@@ -1,20 +1,11 @@
 package com.kingdomsofargus.kingdoms.kingdom;
 
 
+import com.kingdomsofargus.kingdoms.kingdom.impl.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.kingdomsofargus.kingdoms.Kingdoms;
-import com.kingdomsofargus.kingdoms.kingdom.impl.KingdomCreateArgument;
-import com.kingdomsofargus.kingdoms.kingdom.impl.KingdomDiplomacyArgument;
-import com.kingdomsofargus.kingdoms.kingdom.impl.KingdomDisbandArgument;
-import com.kingdomsofargus.kingdoms.kingdom.impl.KingdomHelpArgument;
-import com.kingdomsofargus.kingdoms.kingdom.impl.KingdomInviteArgument;
-import com.kingdomsofargus.kingdoms.kingdom.impl.KingdomJoinArgument;
-import com.kingdomsofargus.kingdoms.kingdom.impl.KingdomLeaveArgument;
-import com.kingdomsofargus.kingdoms.kingdom.impl.KingdomRenameArgument;
-import com.kingdomsofargus.kingdoms.kingdom.impl.KingdomTagArgument;
-import com.kingdomsofargus.kingdoms.kingdom.impl.KingdomWhoArgument;
 import com.kingdomsofargus.kingdoms.utils.command.ArgumentExecutor;
 import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
 
@@ -25,6 +16,7 @@ public class KingdomExecutor extends ArgumentExecutor {
     public KingdomExecutor(Kingdoms plugin) {
         super("kingdom");
         addArgument(helpArgument = new KingdomHelpArgument(this));
+        addArgument(new KingdomAcceptArgument(plugin));
         addArgument(new KingdomCreateArgument(plugin));
         addArgument(new KingdomDisbandArgument(plugin));
         addArgument(new KingdomTagArgument(plugin));

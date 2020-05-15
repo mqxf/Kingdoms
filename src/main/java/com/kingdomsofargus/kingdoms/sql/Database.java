@@ -33,6 +33,7 @@ public class Database {
             Statement statement = connection.createStatement();
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS `users` (`uuid` varchar(255), `username` varchar(255), `purse_coins` INT, `bank_coins` INT, `gender` varchar(255), `rank` varchar(255), `class` varchar(255), `skills` varchar(255), `kingdom_id` INT, `level` INT, `xp` INT, `perms` TEXT)");
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS `kingdoms` (`id` INT, `name` varchar(255), `leader` varchar(255), `tag` varchar(255), `bank` INT, `members` varchar(255), `announcement` varchar(255),  `enemy` varchar(255),  `allies` varchar(255),  `neutral` varchar(255), `invites` varchar(255))");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `invites` (`uuid` varchar(255), `kingdom_id` INT)");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -98,6 +99,21 @@ public class Database {
             ex.printStackTrace();
         }
     }
+
+    public void insertInvite(String uuid, int kingdom_id) {
+        String query = "INSERT INTO `invites`(`uuid`,`kingdom_id`)" +
+                "VALUES(?,?);";
+        try {
+            PreparedStatement stmt = getConnection().prepareStatement(query);
+            stmt.setString(1, uuid);
+            stmt.setInt(2, kingdom_id);
+            stmt.execute();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
 
     public void updateUserRank(String uuid, String name, int coins, int tokens, String rank, String tag, int level, String clan) {
         String query = "UPDATE `users`(`uuid`,`username`,`coins`,`tokens`,`rank`,`tag`,`level`, `clan`, `stats`)" +

@@ -50,19 +50,16 @@ public class KingdomManager {
 							kingdom.setName(response.getString("name"));
 							kingdom.setLeader(response.getString("leader"));
 							kingdom.setTag(response.getString("tag"));
-							kingdom.setMembers(response.getString("members"));
+							kingdom.loadMembers(response.getString("members"));
 							kingdom.setAllies(response.getString("allies"));
 							kingdom.setNeutral(response.getString("neutral"));
 							kingdom.setIn_War(response.getString("in_war"));
 							kingdom.setEnemy(response.getString("enemy"));
-							kingdom.setInvites(response.getString("invites"));
 							// TODO setup roles
 							kingdom.setId(response.getInt("id"));
 							kingdom.setAnnouncement(response.getString("announcement"));
 							kingdom.setBank(response.getInt("bank"));
 							kingdoms.put(response.getInt("id"), kingdom);
-							System.out.println("Found kingdom: " + kingdom.getName());
-							System.out.println("------ Leader: " + kingdom.getLeader());
 						}
 
 
@@ -143,7 +140,7 @@ public class KingdomManager {
 
 	private void saveKingdom(boolean single, Kingdom kingdom) {
 		try {
-			PreparedStatement stmt = db.getConnection().prepareStatement("UPDATE kingdoms SET `name` = ?, `leader` = ?, `tag` = ?, `bank` = ?, allies = ?, enemy = ?, neutral = ?, members = ?, invites = ? WHERE id = ?;");
+			PreparedStatement stmt = db.getConnection().prepareStatement("UPDATE kingdoms SET `name` = ?, `leader` = ?, `tag` = ?, `bank` = ?, allies = ?, enemy = ?, neutral = ?, members = ? WHERE id = ?;");
 			stmt.setString(1, kingdom.getName());
 			stmt.setString(2, kingdom.getLeader());
 			stmt.setString(3, kingdom.getTag());
@@ -151,9 +148,8 @@ public class KingdomManager {
 			stmt.setString(5, kingdom.getAllies());
 			stmt.setString(6, kingdom.getEnemy());
 			stmt.setString(7, kingdom.getNeutral());
-			stmt.setString(8, kingdom.getMembers());
-			stmt.setString(9, kingdom.getInvites());
-			stmt.setInt(10, kingdom.getId());
+			stmt.setString(8, kingdom.membersToString());
+			stmt.setInt(9, kingdom.getId());
 			stmt.executeUpdate();
 		} catch (SQLException ex) {
 			ex.printStackTrace();

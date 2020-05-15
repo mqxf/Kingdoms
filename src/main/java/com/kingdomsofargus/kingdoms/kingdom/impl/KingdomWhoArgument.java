@@ -2,10 +2,10 @@ package com.kingdomsofargus.kingdoms.kingdom.impl;
 
 import com.kingdomsofargus.kingdoms.Kingdoms;
 import com.kingdomsofargus.kingdoms.kingdom.Kingdom;
+import com.kingdomsofargus.kingdoms.user.User;
 import com.kingdomsofargus.kingdoms.utils.command.BukkitUtils;
 import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.libs.org.apache.commons.io.IOUtils;
@@ -39,42 +39,51 @@ public class KingdomWhoArgument extends CommandArgument {
 			sender.sendMessage(ChatColor.RED + "You cannot execute this command as console.");
 			return true;
 		}
-		
-        if (args.length < 2) {
-            sender.sendMessage(ChatColor.RED + "Usage: " + getUsage(label));
-            return true;
-        }
-        Player player = (Player) sender;
-        String name = args[1];
-        
-        if (!Kingdoms.getCore().getKindomManager().kingdomExists(name)) {
-        	sender.sendMessage(ChatColor.RED + "That kingdom does not exist");
-        } else {
-        	String kingdomName = name;
-        	int kingdom_id = Kingdoms.getCore().getKindomManager().getKingdomByName(name);
-        	Kingdom kingdom = Kingdoms.getCore().getKindomManager().getKingdom(kingdom_id);
-        	String kingdomLeader = getName(kingdom.getLeader());
-        	String kingdomTag = kingdom.getTag();
-			String[] kingdomMembers = kingdom.getMembers().split(":");
-        	sender.sendMessage(ChatColor.GRAY + BukkitUtils.STRAIGHT_LINE_DEFAULT);
-        	sender.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD + kingdomName + "'s Info");
-        	sender.sendMessage(ChatColor.YELLOW + "  Leader: " + ChatColor.GRAY + kingdomLeader);
-        	sender.sendMessage(ChatColor.YELLOW + "  TAG: " + ChatColor.GRAY + kingdomTag);
-        	sender.sendMessage(ChatColor.YELLOW + "  Bank: " + ChatColor.GRAY + kingdom.getBank());
-        	sender.sendMessage("");
-        	sender.sendMessage(ChatColor.GOLD.toString() + "Members:");
-        	for (String member : kingdomMembers) {
-        		if (Bukkit.getPlayer(member) != null) {
-        			sender.sendMessage(ChatColor.GREEN + getName(member) + "");
-				} else {
-        			sender.sendMessage(ChatColor.DARK_RED + getName(member));
+
+
+		Player player = (Player) sender;
+
+        switch (args.length) {
+			case 1:
+				User user = Kingdoms.getCore().getUserManager().getUser(player);
+				Kingdom ownKingdom = Kingdoms.getCore().getKindomManager().getKingdom(user.getKingdom_id());
+				sender.sendMessage(ChatColor.GRAY + BukkitUtils.STRAIGHT_LINE_DEFAULT);
+				sender.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD + ownKingdom.getName() + "'s Info");
+				sender.sendMessage(ChatColor.YELLOW + "  Leader: " + ChatColor.GRAY + getName(ownKingdom.getLeader()));
+				sender.sendMessage(ChatColor.YELLOW + "  TAG: " + ChatColor.GRAY + ownKingdom.getTag());
+				sender.sendMessage(ChatColor.YELLOW + "  Bank: " + ChatColor.GRAY + ownKingdom.getBank());
+				sender.sendMessage("");
+				sender.sendMessage(ChatColor.GOLD.toString() + "Members:");
+				for (String member : ownKingdom.members) {
+					sender.sendMessage(ChatColor.LIGHT_PURPLE + getName(member));
 				}
-			}
-        	sender.sendMessage(ChatColor.YELLOW + " TODO " );
-        	sender.sendMessage(ChatColor.GRAY + BukkitUtils.STRAIGHT_LINE_DEFAULT);
-        }
-        
-		return false;
+				sender.sendMessage(ChatColor.GRAY + BukkitUtils.STRAIGHT_LINE_DEFAULT);
+				return false;
+			case 2:
+				String name = args[1];
+				if (!Kingdoms.getCore().getKindomManager().kingdomExists(name)) {
+					sender.sendMessage(ChatColor.RED + "That kingdom does not exist");
+					return false;
+				}
+				int kingdom_id = Kingdoms.getCore().getKindomManager().getKingdomByName(name);
+				Kingdom kingdom = Kingdoms.getCore().getKindomManager().getKingdom(kingdom_id);
+				sender.sendMessage(ChatColor.GRAY + BukkitUtils.STRAIGHT_LINE_DEFAULT);
+				sender.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD + kingdom.getName() + "'s Info");
+				sender.sendMessage(ChatColor.YELLOW + "  Leader: " + ChatColor.GRAY + getName(kingdom.getLeader()));
+				sender.sendMessage(ChatColor.YELLOW + "  TAG: " + ChatColor.GRAY + kingdom.getTag());
+				sender.sendMessage(ChatColor.YELLOW + "  Bank: " + ChatColor.GRAY + kingdom.getBank());
+				sender.sendMessage("");
+				sender.sendMessage(ChatColor.GOLD.toString() + "Members:");
+				for (String member : kingdom.members) {
+					sender.sendMessage(ChatColor.DARK_RED + getName(member));
+				}
+				sender.sendMessage(ChatColor.YELLOW + " TODO " );
+				sender.sendMessage(ChatColor.GRAY + BukkitUtils.STRAIGHT_LINE_DEFAULT);
+				return false;
+			default:
+				sender.sendMessage(ChatColor.RED + "Usage: " + getUsage(label));
+				return false;
+		}
 	}
 
 	public String getName(String uuid) {
