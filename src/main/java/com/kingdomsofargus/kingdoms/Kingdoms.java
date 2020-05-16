@@ -17,6 +17,7 @@ import com.kingdomsofargus.kingdoms.commands.staff.GamemodeCommand;
 import com.kingdomsofargus.kingdoms.commands.staff.HealCommand;
 import com.kingdomsofargus.kingdoms.commands.staff.HealthCommand;
 import com.kingdomsofargus.kingdoms.events.*;
+import com.kingdomsofargus.kingdoms.gui.kingdom.KingdomDiplomacyGUI;
 import com.kingdomsofargus.kingdoms.kingdom.KingdomExecutor;
 import com.kingdomsofargus.kingdoms.kingdom.KingdomManager;
 import com.kingdomsofargus.kingdoms.kingdom.invites.InviteManager;
@@ -57,6 +58,7 @@ public class Kingdoms extends JavaPlugin {
 	private KingdomManager kindomManager;
 	private InviteManager inviteManager;
 	public static Kingdoms core;
+	private KingdomDiplomacyGUI kingdomDiplomacyGUI;
 	private Map<String, Rank> idToRank = new HashMap<>();
 	/** **/
 
@@ -135,6 +137,7 @@ public class Kingdoms extends JavaPlugin {
 		userManager = new UserManager(this, database);
 		kindomManager = new KingdomManager(this, database);
 		inviteManager = new InviteManager(this, database);
+		kingdomDiplomacyGUI = new KingdomDiplomacyGUI(this);
 		/**
 		ranks = new ArrayList<String>();
 		
@@ -334,7 +337,9 @@ public class Kingdoms extends JavaPlugin {
 		return messageFile;
 	}
 
-
+	public KingdomDiplomacyGUI getKingdomDiplomacyGUI() {
+		return kingdomDiplomacyGUI;
+	}
 
 	public DataFile getDatabaseFile() {
 		return databaseFile;

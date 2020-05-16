@@ -1,7 +1,8 @@
 package com.kingdomsofargus.kingdoms.kingdom.impl;
 
 import com.kingdomsofargus.kingdoms.Kingdoms;
-import com.kingdomsofargus.kingdoms.gui.kingdom.KingdomDiplomacyGUI;
+import com.kingdomsofargus.kingdoms.kingdom.Kingdom;
+import com.kingdomsofargus.kingdoms.user.User;
 import com.kingdomsofargus.kingdoms.utils.command.CommandArgument;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -36,28 +37,35 @@ public class KingdomDiplomacyArgument  extends CommandArgument {
 		}
 		
 		Player player = (Player) sender;
-		
-		if (Kingdoms.getCore().getUserManager().getUser(player).getKingdom_id() != 0) {
+		User user = Kingdoms.getCore().getUserManager().getUser(player);
+
+		if (args.length < 2) {
+			sender.sendMessage(net.md_5.bungee.api.ChatColor.RED + "Usage: " + getUsage(label));
+			return true;
+		}
+
+		if (user.getKingdom_id() == 0) {
         	sender.sendMessage(ChatColor.RED + "You aren't in a kingdom!");
         	return true;
 		}
-		
-		if (Kingdoms.getCore().getUserManager().getUser(player).getuClass().equalsIgnoreCase("King") || Kingdoms.getCore().getUserManager().getUser(player).getuClass().equalsIgnoreCase("Queen")) {
-			if (args.length < 2) {
-				player.sendMessage(ChatColor.RED + getUsage("diplomacy"));
-			} else {
-				String targetKingdom = args[1];
-				
-				if (!Kingdoms.getCore().getKindomManager().kingdomExists(targetKingdom)) {
-					player.sendMessage(ChatColor.RED + "That kingdom does not exist!");
-				} else {
-					KingdomDiplomacyGUI.applyMenu(player);
-				}
-			}
-		} else {
-        	player.sendMessage(ChatColor.RED + "You do not have permission to enter diplomacy in this kingdom!");
-        	return true;
+
+		Kingdom usersKingdom = Kingdoms.getCore().getKindomManager().getKingdom(user.getKingdom_id());
+
+		if (!usersKingdom.getLeader().equalsIgnoreCase(player.getUniqueId().toString())) {
+			player.sendMessage(ChatColor.RED + "Only the leader can invite people.");
+			return true;
 		}
+
+		String targetK = args[1];
+
+		if (!Kingdoms.getCore().getKindomManager().kingdomExists(targetK)) {
+			player.sendMessage(ChatColor.RED + "That kingdom does not exist.");
+			return false;
+		}
+
+		Kingdom targetKingdom = Kingdoms.getCore().getKindomManager().getKingdom(Kingdoms.getCore().getKindomManager().getKingdomByName(targetK));
+
+		Kingdoms.getCore().getKingdomDiplomacyGUI().applyMenu(player, targetKingdom);
 		
 		return false;
 	}

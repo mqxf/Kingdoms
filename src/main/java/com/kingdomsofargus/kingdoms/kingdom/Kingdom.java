@@ -35,10 +35,11 @@ public class Kingdom {
     private String alliesString;
     private String neutralString;
     private String enemyString;
+    private String inWarString;
     public List<String> allies;
     public List<String> neutral;
     public List<String> enemy;
-    private String in_War;
+    public List<String> inWar;
     private int bank;
 
     public Kingdom(String leader, String name, int id) {
@@ -46,6 +47,26 @@ public class Kingdom {
         this.name = name;
         this.id = id;
         bank = 0;
+    }
+
+    public String getRelation(Kingdom targetKingdom) {
+        if (allies.contains(String.valueOf(targetKingdom.getId()))) {
+            return "Ally";
+        } else if (enemy.contains(String.valueOf(targetKingdom.getId()))) {
+            return "Enemy";
+        } else if (inWar.contains(String.valueOf(targetKingdom.getId()))) {
+            return "In War";
+        }
+        return "Neutral";
+    }
+
+    public String inWarToString() {
+        StringBuilder builder = new StringBuilder();
+        for (String s : inWar) {
+            builder.append(s);
+            builder.append(":");
+        }
+        return builder.toString();
     }
 
     public String membersToString() {
@@ -147,10 +168,6 @@ public class Kingdom {
     }
 
 
-    public String getIn_War() {
-        return in_War;
-    }
-
     public void loadMembers(String s) {
         members = new ArrayList<>();
         memberString = s;
@@ -172,6 +189,31 @@ public class Kingdom {
         if (!members.contains(perm)) {
             memberString = memberString + ":" + perm;
             members.add(perm);
+        }
+    }
+
+
+    public void loadWar(String s) {
+        inWar = new ArrayList<>();
+        inWarString = s;
+        if (s != null) {
+            String[] parts = s.split(":");
+            for (String part : parts) {
+                if (part != null) {
+                    inWar.add(part);
+                }
+            }
+        }
+    }
+
+    public void reloadWar() {
+        loadMembers(inWarString);
+    }
+
+    public void addWar(String perm) {
+        if (!inWar.contains(perm)) {
+            inWarString = inWarString + ":" + perm;
+            inWar.add(perm);
         }
     }
 
@@ -292,10 +334,6 @@ public class Kingdom {
         this.magicians = magicians;
     }
 
-
-    public void setIn_War(String in_War) {
-        this.in_War = in_War;
-    }
 
     public String getTag() {
         return tag;

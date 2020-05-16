@@ -47,15 +47,15 @@
     <property name="typescript.add.unambiguous.imports.on.the.fly" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\maxst\Desktop\Work" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\maxst\Desktop\Work" />
       <recent name="C:\Users\maxst\Desktop\Work\src\resources" />
       <recent name="C:\Users\maxst\Desktop\Work\src\com\kingdomsofargus\kingdoms\utils" />
       <recent name="C:\Users\maxst\Desktop\Work\src\com\kingdomsofargus\kingdoms\api" />
       <recent name="C:\Users\maxst\Desktop\Work\src\com\kingdomsofargus\kingdoms\api\events" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\maxst\Desktop\Work" />
     </key>
   </component>
   <component name="RunDashboard">
