@@ -1,0 +1,5 @@
+host: '1ocalhost'
+port: 3306
+username: 'root'
+password: ''
+database: 'kingdoms'

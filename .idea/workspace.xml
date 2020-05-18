@@ -1,26 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ArtifactsWorkspaceSettings">
-    <artifacts-to-build>
-      <artifact name="Kingdoms2:jar" />
-    </artifacts-to-build>
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="977ce9b3-d9d5-4e4f-a638-6146608ee90b" name="Default Changelist" comment="" />
+    <list default="true" id="91aa0b12-aea2-47c3-8d75-6ed9d59c2fe4" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="CodeInsightWorkspaceSettings">
-    <option name="optimizeImportsOnTheFly" value="true" />
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -35,27 +26,27 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectId" id="1bqosAXQG0mkD2Nn81ALDTq8T8N" />
+  <component name="ProjectId" id="1bocIAJxdFRW7ZhHLKOL3x5b9mN" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/spring-core-5.2.6.RELEASE.jar!/" />
-    <property name="project.structure.last.edited" value="Artifacts" />
-    <property name="project.structure.proportion" value="0.1543052" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15269257" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
-    <property name="typescript.add.unambiguous.imports.on.the.fly" value="true" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\maxst\Desktop\Work" />
-      <recent name="C:\Users\maxst\Desktop\Work\src\resources" />
-      <recent name="C:\Users\maxst\Desktop\Work\src\com\kingdomsofargus\kingdoms\utils" />
-      <recent name="C:\Users\maxst\Desktop\Work\src\com\kingdomsofargus\kingdoms\api" />
-      <recent name="C:\Users\maxst\Desktop\Work\src\com\kingdomsofargus\kingdoms\api\events" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\maxst\Desktop\Work" />
+      <recent name="C:\Users\maxst\Desktop\Kingdom\Kingdoms" />
+      <recent name="C:\Users\maxst\Desktop\Kingdom\Kingdoms\src\resources" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.kingdomsofargus.kingdoms.api" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\maxst\Desktop\Kingdom\Kingdoms\src\resources" />
+      <recent name="C:\Users\maxst\Desktop\Kingdom\Kingdoms\src\com\kingdomsofargus\kingdoms\api\events" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -75,14 +66,13 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="977ce9b3-d9d5-4e4f-a638-6146608ee90b" name="Default Changelist" comment="" />
-      <created>1589369188687</created>
+      <changelist id="91aa0b12-aea2-47c3-8d75-6ed9d59c2fe4" name="Default Changelist" comment="" />
+      <created>1589301804195</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1589369188687</updated>
-      <workItem from="1589369194119" duration="2389000" />
-      <workItem from="1589371618602" duration="38478000" />
-      <workItem from="1589573667041" duration="4706000" />
+      <updated>1589301804195</updated>
+      <workItem from="1589301807804" duration="10805000" />
+      <workItem from="1589369444512" duration="51000" />
     </task>
     <servers />
   </component>

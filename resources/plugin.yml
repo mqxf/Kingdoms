@@ -1,0 +1,10 @@
+name: Kingdoms
+author: [Freddie, Maxim, Autumn]
+main: com.kingdomsofargus.kingdoms.Kingdoms
+version: 1.1-SNAPSHOT
+api-version: 1.13
+commands:
+  gender:
+  setrank:
+  rank:
+  setprefix:
