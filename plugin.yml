@@ -1,7 +1,7 @@
 name: Kingdoms
 author: [Freddie, Maxim]
 main: com.kingdomsofargus.kingdoms.Kingdoms
-version: 0.2
+version: 0.4
 api-version: 1.13
 depend: [Citizens]
 commands:
